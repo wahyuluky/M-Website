@@ -1,0 +1,261 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data per Produk | Business Monitor</title>
+
+    <link href="https://cdn.boxicons.com/3.0.8/fonts/basic/boxicons.min.css" rel="stylesheet">
+    <!-- Basic Icons -->
+  <link href="https://cdn.boxicons.com/3.0.8/fonts/basic/boxicons.min.css" rel="stylesheet">
+  <!-- Filled Icons -->
+  <link href="https://cdn.boxicons.com/3.0.8/fonts/filled/boxicons-filled.min.css" rel="stylesheet">
+  <!-- Brand Icons -->
+  <link href="https://cdn.boxicons.com/3.0.8/fonts/brands/boxicons-brands.min.css" rel="stylesheet">
+  
+    <link rel="stylesheet" href="produk.css">
+</head>
+<body>
+
+<div class="app-layout">
+    <aside class="sidebar">
+      <div class="brand">
+        <i class="bx bx-bar-chart-big brand-mark"></i>
+        <div class="brand-copy">
+          <div class="brand-name">Business Monitor</div>
+          <div class="brand-sub">Divisi Bisnis</div>
+        </div>
+      </div>
+
+      <div class="nav-label">Menu Utama</div>
+      <nav class="nav" aria-label="Navigasi utama"> 
+        <a  href="dashboard.html">
+            <i class="bx bx-home-alt nav-icon"></i>
+            <span class="nav-text">Dashboard</span>
+        </a>
+        <a href="employees.html">
+            <i class="bx bx-user nav-icon"></i>
+            <span class="nav-text">Data Karyawan</span>
+        </a> 
+
+        <!-- Menu Produk dengan submenu -->
+        <div class="nav-group">
+            <div class="nav-product-row active">
+                <a href="products.html" class="nav-product-link">
+                    <i class="bx bx-package nav-icon"></i>
+                    <span class="nav-text">Produk</span>
+                </a>
+
+                <button
+                    type="button"
+                    class="nav-toggle"
+                    id="produkToggle"
+                    aria-label="Buka submenu Produk"
+                    aria-expanded="false"
+                >
+                    <i class="bx bx-chevron-down arrow-icon"></i>
+                </button>
+            </div>
+
+            <div class="submenu" id="produkSubmenu">
+                <a href="bank.html" class="submenu-link" data-page="bank">
+                    <i class="bx bx-buildings"></i>
+                    <span>Data Bank</span>
+                </a>
+
+                <a href="product.html" class="submenu-link active" data-page="produk">
+                    <i class="bx bx-box"></i>
+                    <span>Data Produk</span>
+                </a>
+            </div>
+        </div>
+
+        <a href="targets.html">
+            <i class="bx bx-bullseye nav-icon"></i>
+            <span class="nav-text">Target</span>
+        </a>
+        <a href="commitments.html">
+            <i class="bx bx-check-shield nav-icon"></i>
+            <span class="nav-text">Komitmen</span>
+        </a>
+        <a href="daily-activities.html">
+            <i class="bx bx-calendar-check nav-icon"></i>
+            <span class="nav-text">Daily Activity</span>
+        </a>
+        <a href="achievements.html">
+            <i class="bx bx-trophy nav-icon"></i>
+            <span class="nav-text">Pencapaian</span>
+        </a>
+        <a href="reports.html">
+            <i class="bx bx-file nav-icon"></i>
+            <span class="nav-text">Laporan</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-bottom">
+        <div class="profile">
+          <div class="avatar">M</div>
+          <div class="profile-copy">
+            <div class="profile-name">Manajer Bisnis</div>
+            <div class="profile-role">Administrator</div>
+          </div>
+        </div>
+        <a class="logout" href="#"><span>↪</span><span class="logout-text">Keluar</span></a>
+      </div>
+    </aside>
+
+    <main class="main-content">
+        <header class="topbar">
+            <div>
+                <div class="breadcrumb">Dashboard / Data Bisnis / Produk</div>
+                <h1>Data per Produk</h1>
+                <p>Monitoring volume dan IJP produk per bulan.</p>
+            </div>
+
+            <div class="topbar-year">
+                <span>Tahun aktif</span>
+                <strong id="activeYearLabel">-</strong>
+            </div>
+        </header>
+
+        <section class="summary-grid">
+            <article class="summary-card">
+                <div class="summary-icon blue"><i class="bx bx-package"></i></div>
+                <div>
+                    <span>Total Produk</span>
+                    <h2 id="totalProducts">0</h2>
+                    <small>Produk pada tahun terpilih</small>
+                </div>
+            </article>
+
+            <article class="summary-card">
+                <div class="summary-icon green"><i class="bx bx-bar-chart-alt-2"></i></div>
+                <div>
+                    <span>Total Volume</span>
+                    <h2 id="totalVolume">Rp0</h2>
+                    <small>Akumulasi Januari–Desember</small>
+                </div>
+            </article>
+
+            <article class="summary-card">
+                <div class="summary-icon purple"><i class="bx bx-wallet"></i></div>
+                <div>
+                    <span>Total IJP</span>
+                    <h2 id="totalIjp">Rp0</h2>
+                    <small>Akumulasi Januari–Desember</small>
+                </div>
+            </article>
+        </section>
+
+        <section class="content-card">
+            <div class="section-heading">
+                <div>
+                    <h2>Rekapitulasi Produk</h2>
+                    <p>Data volume dan IJP berdasarkan tahun.</p>
+                </div>
+
+                <button id="addBtn" class="btn btn-primary">
+                    <i class="bx bx-plus"></i> Tambah Produk
+                </button>
+            </div>
+
+            <div class="toolbar">
+                <div class="search-box">
+                    <i class="bx bx-search"></i>
+                    <input id="searchInput" type="search" placeholder="Cari nama produk...">
+                </div>
+
+                <div class="toolbar-actions">
+                    <select id="yearFilter" aria-label="Filter tahun"></select>
+
+                    <button id="importBtn" class="btn btn-outline">
+                        <i class="bx bx-upload"></i> Impor Excel
+                    </button>
+                    <input id="importFile" type="file" accept=".xlsx,.xls,.csv" hidden>
+
+                    <button id="exportBtn" class="btn btn-outline">
+                        <i class="bx bx-download"></i> Ekspor Excel
+                    </button>
+
+                    <button id="resetBtn" class="btn btn-danger-outline">
+                        <i class="bx bx-refresh"></i> Reset Demo
+                    </button>
+                </div>
+            </div>
+
+            <div class="table-meta">
+                <span id="tableCount">0 data</span>
+                <span id="saveStatus">Data tersimpan</span>
+            </div>
+
+            <div class="table-wrapper">
+                <table id="productTable">
+                    <thead id="productTableHead"></thead>
+                    <tbody id="productTableBody"></tbody>
+                    <tfoot id="productTableFoot"></tfoot>
+                </table>
+
+                <div id="emptyState" class="empty-state" hidden>
+                    <i class="bx bx-folder-open"></i>
+                    <h3>Data belum tersedia</h3>
+                    <p>Tambahkan produk atau ubah filter pencarian.</p>
+                </div>
+            </div>
+
+            <div class="table-note">
+                <i class="bx bx-info-circle"></i>
+                Angka dapat diubah langsung pada tabel. Perubahan akan disimpan di browser.
+            </div>
+        </section>
+
+        <footer class="page-footer">
+            Business Monitor &copy; <span id="currentYear"></span>
+        </footer>
+    </main>
+</div>
+
+<!-- Modal tambah produk -->
+<div id="modalBackdrop" class="modal-backdrop" hidden>
+    <div class="modal">
+        <div class="modal-header">
+            <div>
+                <h2>Tambah Data Produk</h2>
+                <p>Masukkan produk dan tahun pencatatan.</p>
+            </div>
+            <button type="button" id="closeModalBtn" class="icon-btn" aria-label="Tutup">
+                <i class="bx bx-x"></i>
+            </button>
+        </div>
+
+        <form id="productForm">
+            <div class="form-group">
+                <label for="productName">Nama Produk</label>
+                <input id="productName" name="productName" type="text"
+                       placeholder="Contoh: Kredit Usaha Rakyat" required maxlength="150">
+            </div>
+
+            <div class="form-group">
+                <label for="productYear">Tahun</label>
+                <input id="productYear" name="productYear" type="number"
+                       min="2000" max="2100" required>
+            </div>
+
+            <p class="form-hint">Nilai Volume dan IJP awal diatur menjadi Rp0.</p>
+
+            <div class="modal-actions">
+                <button type="button" id="cancelBtn" class="btn btn-outline">Batal</button>
+                <button type="submit" class="btn btn-primary">
+                    <i class="bx bx-save"></i> Simpan Produk
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<script src="produk.js"></script>
+</body>
+</html>

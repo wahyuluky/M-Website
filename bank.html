@@ -1,0 +1,372 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Bank | Dashboard Bisnis</title>
+
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+    <!-- Basic Icons -->
+  <link href="https://cdn.boxicons.com/3.0.8/fonts/basic/boxicons.min.css" rel="stylesheet">
+  <!-- Filled Icons -->
+  <link href="https://cdn.boxicons.com/3.0.8/fonts/filled/boxicons-filled.min.css" rel="stylesheet">
+  <!-- Brand Icons -->
+  <link href="https://cdn.boxicons.com/3.0.8/fonts/brands/boxicons-brands.min.css" rel="stylesheet">
+  
+    <link rel="stylesheet" href="bank.css">
+</head>
+<body>
+    <aside class="sidebar">
+      <div class="brand">
+        <i class="bx bx-bar-chart-big brand-mark"></i>
+        <div class="brand-copy">
+          <div class="brand-name">Business Monitor</div>
+          <div class="brand-sub">Divisi Bisnis</div>
+        </div>
+      </div>
+
+      <div class="nav-label">Menu Utama</div>
+      <nav class="nav" aria-label="Navigasi utama"> 
+        <a  href="dashboard.html">
+            <i class="bx bx-home-alt nav-icon"></i>
+            <span class="nav-text">Dashboard</span>
+        </a>
+        <a href="employees.html">
+            <i class="bx bx-user nav-icon"></i>
+            <span class="nav-text">Data Karyawan</span>
+        </a> 
+
+        <!-- Menu Produk dengan submenu -->
+        <div class="nav-group">
+            <div class="nav-product-row active">
+                <a href="products.html" class="nav-product-link">
+                    <i class="bx bx-package nav-icon"></i>
+                    <span class="nav-text">Produk</span>
+                </a>
+
+                <button
+                    type="button"
+                    class="nav-toggle"
+                    id="produkToggle"
+                    aria-label="Buka submenu Produk"
+                    aria-expanded="false"
+                >
+                    <i class="bx bx-chevron-down arrow-icon"></i>
+                </button>
+            </div>
+
+            <div class="submenu" id="produkSubmenu">
+                <a href="bank.html" class="submenu-link active" data-page="bank">
+                    <i class="bx bx-buildings"></i>
+                    <span>Data Bank</span>
+                </a>
+
+                <a href="product.html" class="submenu-link" data-page="produk">
+                    <i class="bx bx-box"></i>
+                    <span>Data Produk</span>
+                </a>
+            </div>
+        </div>
+
+        <a href="targets.html">
+            <i class="bx bx-bullseye nav-icon"></i>
+            <span class="nav-text">Target</span>
+        </a>
+        <a href="commitments.html">
+            <i class="bx bx-check-shield nav-icon"></i>
+            <span class="nav-text">Komitmen</span>
+        </a>
+        <a href="daily-activities.html">
+            <i class="bx bx-calendar-check nav-icon"></i>
+            <span class="nav-text">Daily Activity</span>
+        </a>
+        <a href="achievements.html">
+            <i class="bx bx-trophy nav-icon"></i>
+            <span class="nav-text">Pencapaian</span>
+        </a>
+        <a href="reports.html">
+            <i class="bx bx-file nav-icon"></i>
+            <span class="nav-text">Laporan</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-bottom">
+        <div class="profile">
+          <div class="avatar">M</div>
+          <div class="profile-copy">
+            <div class="profile-name">Manajer Bisnis</div>
+            <div class="profile-role">Administrator</div>
+          </div>
+        </div>
+        <a class="logout" href="#"><span>↪</span><span class="logout-text">Keluar</span></a>
+      </div>
+    </aside>
+
+    <main class="main">
+        <header class="topbar">
+            <div>
+                <div class="breadcrumb">
+                    Produk <i class="bx bx-chevron-right"></i> Data Bank
+                </div>
+
+                <h1>Data Bank</h1>
+
+                <p class="page-desc">
+                    Rekapitulasi Volume dan IJP setiap bank berdasarkan produk
+                    dan periode bulanan.
+                </p>
+            </div>
+
+            <div class="user-profile">
+                <div class="avatar">A</div>
+                <div>
+                    <strong>Administrator</strong>
+                    <small>Admin</small>
+                </div>
+            </div>
+        </header>
+
+        <!-- Ringkasan -->
+        <section class="summary-grid">
+            <article class="summary-card">
+                <div class="summary-top">
+                    <span>Total Bank</span>
+                    <i class="bx bx-buildings purple"></i>
+                </div>
+                <h2 id="totalBanks">0</h2>
+                <p>Jumlah baris bank sesuai filter</p>
+            </article>
+
+            <article class="summary-card">
+                <div class="summary-top">
+                    <span>Total Volume</span>
+                    <i class="bx bx-bar-chart-alt-2 blue"></i>
+                </div>
+                <h2 id="totalVol">Rp0</h2>
+                <p>Akumulasi Volume Januari–Desember</p>
+            </article>
+
+            <article class="summary-card">
+                <div class="summary-top">
+                    <span>Total IJP</span>
+                    <i class="bx bx-wallet green"></i>
+                </div>
+                <h2 id="totalIjp">Rp0</h2>
+                <p>Akumulasi IJP Januari–Desember</p>
+            </article>
+        </section>
+
+        <!-- Tabel utama -->
+        <section class="panel">
+            <div class="panel-header">
+                <div>
+                    <h2>Rekapitulasi Produk dan Bank</h2>
+                    <p>
+                        Edit nama produk, nama bank, Volume, dan IJP secara
+                        langsung seperti menggunakan Excel.
+                    </p>
+                </div>
+
+                <button class="btn btn-primary" id="addBtn" type="button">
+                    <i class="bx bx-plus"></i>
+                    Tambah Produk / Bank
+                </button>
+            </div>
+
+            <!-- Filter dan aksi -->
+            <div class="toolbar">
+                <label class="search-box">
+                    <i class="bx bx-search"></i>
+                    <input
+                        type="search"
+                        id="searchInput"
+                        placeholder="Cari produk atau nama bank..."
+                        aria-label="Cari produk atau nama bank"
+                    >
+                </label>
+
+                <select id="yearFilter" aria-label="Filter tahun">
+                    <option value="">Semua tahun</option>
+                </select>
+
+                <button class="btn btn-outline" id="importBtn" type="button">
+                    <i class="bx bx-upload"></i>
+                    Impor Excel
+                </button>
+
+                <input
+                    type="file"
+                    id="importFile"
+                    accept=".xlsx,.xls,.csv"
+                    hidden
+                >
+
+                <button class="btn btn-outline" id="exportBtn" type="button">
+                    <i class="bx bx-download"></i>
+                    Ekspor Excel
+                </button>
+
+                <button class="btn btn-outline" id="resetBtn" type="button">
+                    <i class="bx bx-refresh"></i>
+                    Reset Filter
+                </button>
+            </div>
+
+            <!-- Informasi tabel -->
+            <div class="spreadsheet-info">
+                <span>
+                    <i class="bx bx-edit"></i>
+                    Klik sel untuk mengedit data.
+                </span>
+
+                <span>
+                    <i class="bx bx-save"></i>
+                    Perubahan disimpan otomatis di browser.
+                </span>
+
+                <span>
+                    <i class="bx bx-table"></i>
+                    Setiap bulan memiliki kolom Volume dan IJP.
+                </span>
+            </div>
+
+            <!-- Spreadsheet -->
+            <div class="table-wrap">
+                <table id="bankTable">
+                    <colgroup id="bankTableColumns">
+                        <col class="col-number">
+                        <col class="col-product">
+                        <col class="col-bank">
+                        <!-- Kolom Volume dan IJP dibuat oleh JavaScript -->
+                    </colgroup>
+
+                    <thead id="bankTableHead"></thead>
+                    <tbody id="bankTableBody"></tbody>
+                    <tfoot id="bankTableFoot"></tfoot>
+                </table>
+
+                <div class="empty-state" id="emptyState" hidden>
+                    <i class="bx bx-folder-open"></i>
+                    <strong>Data tidak ditemukan</strong>
+                    <span>
+                        Coba ubah pencarian, pilih tahun lain, atau tambahkan
+                        produk dan bank baru.
+                    </span>
+                </div>
+            </div>
+
+            <div class="table-footer">
+                <span id="tableCount">0 data bank</span>
+                <span id="saveStatus">Data tersimpan di browser</span>
+            </div>
+        </section>
+
+        <p class="disclaimer">
+            <i class="bx bx-info-circle"></i>
+            Data awal merupakan simulasi. Ekspor data secara berkala sebagai
+            cadangan karena penyimpanan browser tidak otomatis tersinkronisasi
+            antarperangkat.
+        </p>
+    </main>
+
+    <!-- Modal tambah produk dan bank -->
+    <div class="modal-backdrop" id="modalBackdrop" hidden>
+        <section
+            class="modal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="modalTitle"
+        >
+            <div class="modal-header">
+                <div>
+                    <h2 id="modalTitle">Tambah Produk / Bank</h2>
+                    <p>
+                        Masukkan nama produk, nama bank, dan tahun pencatatan.
+                    </p>
+                </div>
+
+                <button
+                    class="icon-btn"
+                    id="closeModalBtn"
+                    type="button"
+                    aria-label="Tutup"
+                >
+                    <i class="bx bx-x"></i>
+                </button>
+            </div>
+
+            <form id="bankForm">
+                <div class="form-group">
+                    <label for="productName">
+                        Nama Produk <span>*</span>
+                    </label>
+
+                    <input
+                        type="text"
+                        id="productName"
+                        name="productName"
+                        maxlength="150"
+                        placeholder="Contoh: Kredit FLPP"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="bankName">
+                        Nama Bank <span>*</span>
+                    </label>
+
+                    <input
+                        type="text"
+                        id="bankName"
+                        name="bankName"
+                        maxlength="100"
+                        placeholder="Contoh: BANK TABUNGAN NEGARA"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="bankYear">
+                        Tahun <span>*</span>
+                    </label>
+
+                    <input
+                        type="number"
+                        id="bankYear"
+                        name="bankYear"
+                        min="2000"
+                        max="2100"
+                        required
+                    >
+                </div>
+
+                <div class="modal-actions">
+                    <button
+                        class="btn btn-outline"
+                        id="cancelBtn"
+                        type="button"
+                    >
+                        Batal
+                    </button>
+
+                    <button class="btn btn-primary" type="submit">
+                        <i class="bx bx-save"></i>
+                        Simpan Data
+                    </button>
+                </div>
+            </form>
+        </section>
+    </div>
+
+    <!-- Notifikasi -->
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+    <!-- Library Excel -->
+    <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
+
+    <!-- Logika tabel -->
+    <script src="bank.js"></script>
+</body>
+</html>

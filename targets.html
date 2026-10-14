@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Target Karyawan | Business Monitor</title>
+
+<!-- Basic Icons -->
+  <link href="https://cdn.boxicons.com/3.0.8/fonts/basic/boxicons.min.css" rel="stylesheet">
+  <!-- Filled Icons -->
+  <link href="https://cdn.boxicons.com/3.0.8/fonts/filled/boxicons-filled.min.css" rel="stylesheet">
+  <!-- Brand Icons -->
+  <link href="https://cdn.boxicons.com/3.0.8/fonts/brands/boxicons-brands.min.css" rel="stylesheet">
+  
+
+<style>
+:root{
+  --navy:#172b4d;
+  --blue:#4f46e5;
+  --blue-soft:#eef2ff;
+  --bg:#f5f7fb;
+  --text:#172033;
+  --muted:#718096;
+  --line:#e6eaf1;
+  --white:#fff;
+  --green:#15803d;
+  --green-bg:#dcfce7;
+  --amber:#b45309;
+  --amber-bg:#fef3c7;
+  --red:#b91c1c;
+  --red-bg:#fee2e2
+}
+
+*{
+  box-sizing:border-box
+}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font:14px/1.5 Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif
+}
+button,input,select,textarea{
+  font:inherit
+}
+button{
+  cursor:pointer
+}
+.app{
+  display:flex;
+  min-height:100vh
+}
+
+.sidebar {
+  width: 250px;
+  background: #111827;
+  color: #fff;
+  position: fixed;
+  inset: 0 auto 0 0;
+  display: flex;
+  flex-direction: column;
+  padding: 22px 14px 16px;
+  z-index: 10;
+}
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      padding: 0 8px 24px;
+      border-bottom: 1px solid rgba(255,255,255,.12);
+      margin-bottom: 22px;
+    }
+    .brand-mark {
+      width: 42px; height: 42px; border-radius: 12px;
+      display: grid; place-items: center;
+      background: linear-gradient(145deg, #60a5fa, #2563eb);
+      color: white; font-size: 22px; font-weight: 800;
+    }
+    .brand-name { font-size: 16px; font-weight: 750; letter-spacing: -.3px; }
+    .brand-sub { color: #aebdd5; font-size: 11px; margin-top: 4px; }
+    .nav-label {
+      color: #91a4c1; text-transform: uppercase; letter-spacing: 1.2px;
+      font-size: 10px; font-weight: 700; padding: 0 12px 10px;
+    }
+    /* Navigasi utama */
+.nav {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.nav > a,
+.nav-product-link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    min-height: 42px;
+    padding: 12px 13px;
+    border-radius: 9px;
+    color: #d3deef;
+    font-size: 13px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: background 0.18s ease, color 0.18s ease;
+}
+
+.nav > a:hover,
+.nav-product-link:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: white;
+}
+
+.nav > a.active,
+.nav-product-link.active {
+    background: var(--blue);
+    color: white;
+    box-shadow: 0 5px 14px rgba(37, 99, 235, 0.24);
+}
+
+/* Ikon dan teks sejajar */
+.nav-icon {
+    width: 22px;
+    min-width: 22px;
+    text-align: center;
+    font-size: 20px;
+    height: 22px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Baris menu Produk */
+.nav-product-row {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    min-height: 42px;
+    border-radius: 9px;
+}
+
+.nav-product-row:hover {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.nav-product-link {
+    flex: 1;
+    min-width: 0;
+}
+
+.nav-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 36px;
+    height: 42px;
+    padding: 0;
+    border: none;
+    border-radius: 8px;
+    background: transparent;
+    color: #d3deef;
+    cursor: pointer;
+}
+
+.nav-toggle:hover {
+    color: white;
+}
+
+.arrow-icon {
+    font-size: 18px;
+    transition: transform 0.3s ease;
+}
+
+.nav-group.open .arrow-icon {
+    transform: rotate(180deg);
+}
+
+/* Submenu */
+.submenu {
+    display: none;
+    padding: 5px 0 5px 20px;
+}
+
+.nav-group.open .submenu {
+    display: block;
+}
+
+.submenu-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 38px;
+    margin-top: 4px;
+    padding: 10px 12px;
+    border-radius: 8px;
+    color: #c4d1e5;
+    text-decoration: none;
+    font-size: 12px;
+}
+
+.submenu-link:hover,
+.submenu-link.active {
+    background: rgba(255, 255, 255, 0.12);
+    color: white;
+}
+
+.submenu-link i {
+    width: 18px;
+    min-width: 18px;
+    text-align: center;
+    font-size: 16px;
+}
+
+    .sidebar-bottom { margin-top: auto; border-top: 1px solid rgba(255,255,255,.12); padding-top: 17px; }
+    .profile { display: flex; align-items: center; gap: 10px; padding: 4px 7px 16px; }
+    .avatar {
+      display: grid; place-items: center; flex-shrink: 0;
+      width: 37px; height: 37px; border-radius: 50%;
+      background: #e5edfb; color: #31517f; font-weight: 750;
+    }
+    .profile-name { font-weight: 650; font-size: 14px; }
+    .profile-role { color: #aebdd5; font-size: 12px; margin-top: 4px; }
+    .logout { display: flex; align-items: center; gap: 10px; color: #c4d1e5; padding: 10px 8px; font-size: 14px; text-decoration: none; }
+
+ .main{flex:1;min-width:0}.topbar{height:76px;background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 34px}.crumb{font-size:12px;color:var(--muted)}.crumb b{color:var(--text)}.profile{display:flex;align-items:center;gap:10px}.avatar{width:36px;height:36px;border-radius:50%;background:#dbeafe;color:#1d4ed8;display:grid;place-items:center;font-weight:800}.profile strong{display:block;font-size:12px}.profile small{color:var(--muted)}
+ .content{padding:30px 34px;max-width:1450px;margin:auto}
+ .breadcrumbs { color: #8190a7; font-size: 11px; margin-bottom: 8px; }
+ .page-heading{display:flex;align-items:flex-start;justify-content:space-between;gap:20px;margin-bottom:24px}.eyebrow{color:var(--blue);font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:1px}.page-heading h1{font-size:26px;letter-spacing:-.7px;margin:5px 0}.page-heading p{margin:0;color:var(--muted)}.btn{border:1px solid var(--line);border-radius:9px;padding:10px 15px;background:#fff;color:#354052;font-weight:700;display:inline-flex;align-items:center;justify-content:center;gap:8px}.btn-primary{background:var(--blue);color:#fff;border-color:var(--blue)}.btn:hover{filter:brightness(.97)}.btn-small{padding:6px 10px;font-size:12px}.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;margin-bottom:22px}.stat{background:#fff;border:1px solid var(--line);border-radius:13px;padding:18px}.stat-top{display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:12px;font-weight:650}.stat-icon{width:34px;height:34px;display:grid;place-items:center;border-radius:10px;background:var(--blue-soft);color:var(--blue);font-size:17px}.stat-value{font-size:26px;font-weight:800;letter-spacing:-.6px;margin:12px 0 2px}.stat-note{font-size:11px;color:var(--muted)}.stat-note .good{color:var(--green);font-weight:700}.panel{background:#fff;border:1px solid var(--line);border-radius:13px;margin-bottom:20px;overflow:hidden}.panel-head{padding:19px 21px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:15px}.panel-head h2{font-size:15px;margin:0}.panel-head p{font-size:12px;color:var(--muted);margin:3px 0 0}.filters{display:flex;gap:9px;flex-wrap:wrap}.control{border:1px solid #dfe5ee;border-radius:8px;padding:9px 11px;background:white;color:#475569;min-width:150px;outline:none}.control:focus{border-color:var(--blue);box-shadow:0 0 0 3px #3157c81a}.search{min-width:220px}.table-wrap{overflow-x:auto}table{width:100%;border-collapse:collapse;white-space:nowrap}th{text-align:left;font-size:10px;letter-spacing:.7px;color:#8792a5;background:#fafbfe;padding:13px 20px;font-weight:800}td{padding:15px 20px;border-top:1px solid #edf0f5;font-size:12px}tbody tr:hover{background:#fbfcff}.employee{display:flex;align-items:center;gap:10px}.emp-avatar{width:34px;height:34px;border-radius:10px;background:#e0e7ff;color:#4338ca;display:grid;place-items:center;font-weight:800}.employee strong{display:block;font-size:12px}.employee small{display:block;color:var(--muted);font-size:11px}.target-title{font-weight:750;color:#283449}.subtle{color:var(--muted);font-size:11px;margin-top:3px}.status{display:inline-flex;align-items:center;gap:6px;padding:5px 9px;border-radius:20px;font-size:10px;font-weight:800}.status::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}.on-track{color:var(--green);background:var(--green-bg)}.watch{color:var(--amber);background:var(--amber-bg)}.behind{color:var(--red);background:var(--red-bg)}.progress{width:125px}.progress-line{height:6px;border-radius:10px;background:#edf0f5;overflow:hidden;margin-bottom:5px}.progress-line span{display:block;height:100%;border-radius:10px;background:var(--blue)}.progress small{color:var(--muted);font-size:10px}.actions{display:flex;gap:6px}.icon-btn{border:1px solid var(--line);background:#fff;border-radius:7px;width:30px;height:30px;color:#64748b}.icon-btn:hover{color:var(--blue);background:var(--blue-soft)}.table-foot{padding:14px 20px;display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:11px;border-top:1px solid var(--line)}.foot-buttons{display:flex;gap:6px}.foot-buttons button{border:1px solid var(--line);background:#fff;border-radius:7px;padding:6px 10px;color:#64748b}.bottom-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:20px}.insight{padding:20px}.insight-row{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid #edf0f5}.insight-row:last-child{border:0}.insight-mark{width:36px;height:36px;border-radius:10px;display:grid;place-items:center;background:#fff7ed;color:#c2410c;font-size:16px}.insight-row strong{font-size:12px;display:block}.insight-row small{color:var(--muted);font-size:11px}.insight-row .status{margin-left:auto}.period-summary{padding:20px}.summary-line{display:flex;justify-content:space-between;align-items:center;font-size:12px;margin:14px 0 8px}.summary-line span{color:var(--muted)}.summary-bar{height:8px;background:#edf0f5;border-radius:10px;overflow:hidden}.summary-bar span{height:100%;display:block;background:var(--blue);border-radius:10px}.modal-backdrop{position:fixed;inset:0;background:#0f172a80;display:none;align-items:center;justify-content:center;padding:18px;z-index:10}.modal-backdrop.show{display:flex}.modal{width:100%;max-width:620px;background:white;border-radius:16px;box-shadow:0 24px 80px #0003;max-height:92vh;overflow:auto}.modal-head{padding:21px 24px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center}.modal-head h2{font-size:17px;margin:0}.close{border:0;background:#f1f5f9;border-radius:8px;width:32px;height:32px;font-size:18px}.modal-body{padding:22px 24px}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:15px}.field{display:flex;flex-direction:column;gap:6px}.field.full{grid-column:1/-1}.field label{font-size:12px;font-weight:750;color:#475569}.field input,.field select,.field textarea{border:1px solid #dfe5ee;border-radius:8px;padding:10px 11px;outline:none;width:100%;background:#fff}.field textarea{min-height:78px;resize:vertical}.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--blue)}.modal-foot{padding:16px 24px;border-top:1px solid var(--line);display:flex;justify-content:flex-end;gap:9px}.toast{position:fixed;right:24px;bottom:24px;background:#172554;color:white;padding:12px 17px;border-radius:10px;box-shadow:0 10px 35px #0002;display:none;z-index:20}.toast.show{display:block}@media(max-width:1050px){.sidebar{width:210px}.content{padding:25px 22px}.topbar{padding:0 22px}.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.bottom-grid{grid-template-columns:1fr}}@media(max-width:700px){.sidebar{width:66px;padding:18px 8px}.brand{padding:0 6px 25px}.brand-mark{flex-shrink:0}.brand-copy,.nav-label,.nav a .nav-text,.side-bottom{display:none}.nav a{justify-content:center;padding:12px 5px}.nav a .ico{font-size:18px}.topbar{height:65px;padding:0 14px}.content{padding:22px 13px}.page-heading{flex-direction:column}.page-heading h1{font-size:23px}.stats{gap:10px}.stat{padding:13px}.stat-value{font-size:23px}.panel-head{align-items:flex-start;flex-direction:column;padding:16px}.filters{width:100%}.control,.search{width:100%;min-width:0}.form-grid{grid-template-columns:1fr}.field.full{grid-column:auto}.profile .profile-copy{display:none}.table-foot{gap:10px;flex-wrap:wrap}}
+
+body{font-size:14px;line-height:1.5}
+.app{display:block;min-height:100vh}
+.main{margin-left:238px;min-height:100vh;min-width:0}
+.topbar{height:70px;background:var(--white);border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:20px;padding:0 30px;position:sticky;top:0;z-index:5}
+.top-left,.top-right{display:flex;align-items:center;gap:16px}
+.menu-button{border:0;background:#f1f5fb;color:var(--navy);width:36px;height:36px;border-radius:9px;cursor:pointer;font-size:18px}
+.global-search{width:min(340px,30vw);height:38px;border:1px solid var(--line);border-radius:9px;display:flex;align-items:center;gap:9px;padding:0 12px;background:#f9fbfe;color:#8190a7}
+.global-search input{border:0;outline:0;background:transparent;width:100%;color:var(--text);font-size:12px;min-width:0}
+.date-pill{background:#f3f6fb;padding:10px 13px;border-radius:8px;font-size:12px;color:#526582;white-space:nowrap}
+.manager{display:flex;align-items:center;gap:9px;font-size:12px;font-weight:650;white-space:nowrap}
+.manager .avatar{width:34px;height:34px}
+.manager-chevron{color:#8190a7}
+.notification{color:#60738f;font-size:17px}
+.content{padding:27px 30px 34px;max-width:1600px;margin:0 auto}
+.page-heading{align-items:flex-start;gap:16px;margin-bottom:22px}
+.page-heading h1{font-size:25px;line-height:1.2;margin:0;letter-spacing:-.7px}
+.page-heading p{margin:8px 0 0;color:var(--muted);font-size:13px}
+.btn-primary{background:#2563eb;border-color:#2563eb;box-shadow:0 4px 10px rgba(37,99,235,.16);font-size:12px;font-weight:650;border-radius:8px}
+.btn-primary:hover{background:#1d4ed8}
+.stat,.panel{border-color:#e5eaf2;box-shadow:0 4px 18px rgba(23,43,77,.04)}
+.stat{border-radius:12px}
+.panel{border-radius:12px}
+.panel-head{border-bottom-color:#edf0f5}
+th{background:#f8fafd;color:#718096;letter-spacing:0;font-size:10px;padding:14px 17px}
+td{border-top-color:#edf1f6;padding:14px 17px;font-size:11px;color:#405471}
+.table-foot{border-top-color:#edf1f6}
+@media(max-width:1100px){.sidebar{width:72px;padding:18px 9px}.brand{justify-content:center;padding:0 0 20px}.brand-copy,.nav-label,.nav-text,.profile-copy,.logout-text{display:none}.nav a{justify-content:center;padding:12px 8px}.sidebar .profile{justify-content:center;padding-inline:0}.logout{justify-content:center}.main{margin-left:72px}.topbar{padding:0 18px}.date-pill{display:none}.content{padding:22px 18px}}
+@media(max-width:850px){.sidebar{width:72px}.main{margin-left:72px}}
+@media(max-width:560px){.topbar{height:60px;padding:0 12px}.top-left,.top-right{gap:8px}.global-search{width:40vw}.manager-label,.manager-chevron{display:none}.content{padding:18px 12px}.page-heading{flex-direction:column}.page-heading h1{font-size:22px}.stats{gap:9px}.stat{padding:12px}.stat-value{font-size:22px}.filters{width:100%}.control,.search{width:100%;min-width:0}.table-foot{align-items:flex-start;flex-direction:column}}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="app">
+  <aside class="sidebar">
+      <div class="brand">
+        <i class="bx bx-bar-chart-big brand-mark"></i>
+        <div class="brand-copy">
+          <div class="brand-name">Business Monitor</div>
+          <div class="brand-sub">Divisi Bisnis</div>
+        </div>
+      </div>
+
+      <div class="nav-label">Menu Utama</div>
+      <nav class="nav" aria-label="Navigasi utama"> 
+        <a  href="dashboard.html">
+            <i class="bx bx-home-alt nav-icon"></i>
+            <span class="nav-text">Dashboard</span>
+        </a>
+        <a href="employees.html">
+            <i class="bx bx-user nav-icon"></i>
+            <span class="nav-text">Data Karyawan</span>
+        </a>
+        <!-- Menu Produk dengan submenu -->
+        <div class="nav-group">
+            <div class="nav-product-row">
+                <a href="products.html" class="nav-product-link">
+                    <i class="bx bx-package nav-icon"></i>
+                    <span class="nav-text">Produk</span>
+                </a>
+
+                <button
+                    type="button"
+                    class="nav-toggle"
+                    id="produkToggle"
+                    aria-label="Buka submenu Produk"
+                    aria-expanded="false"
+                >
+                    <i class="bx bx-chevron-down arrow-icon"></i>
+                </button>
+            </div>
+
+            <div class="submenu" id="produkSubmenu">
+                <a href="bank.html" class="submenu-link active" data-page="bank">
+                    <i class="bx bx-buildings"></i>
+                    <span>Data Bank</span>
+                </a>
+
+                <a href="product.html" class="submenu-link" data-page="produk">
+                    <i class="bx bx-box"></i>
+                    <span>Data Produk</span>
+                </a>
+            </div>
+        </div>
+
+        <a class="active" href="targets.html">
+            <i class="bx bx-bullseye nav-icon"></i>
+            <span class="nav-text">Target</span>
+        </a>
+        <a href="commitments.html">
+            <i class="bx bx-check-shield nav-icon"></i>
+            <span class="nav-text">Komitmen</span>
+        </a>
+        <a href="daily-activities.html">
+            <i class="bx bx-calendar-check nav-icon"></i>
+            <span class="nav-text">Daily Activity</span>
+        </a>
+        <a href="achievements.html">
+            <i class="bx bx-trophy nav-icon"></i>
+            <span class="nav-text">Pencapaian</span>
+        </a>
+        <a href="reports.html">
+            <i class="bx bx-file nav-icon"></i>
+            <span class="nav-text">Laporan</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-bottom">
+        <div class="profile">
+          <div class="avatar">M</div>
+          <div class="profile-copy">
+            <div class="profile-name">Manajer Bisnis</div>
+            <div class="profile-role">Administrator</div>
+          </div>
+        </div>
+        <a class="logout" href="#"><span>↪</span><span class="logout-text">Keluar</span></a>
+      </div>
+  </aside>
+
+ <main class="main">
+
+  <header class="topbar">
+  <div class="top-left">
+    <button class="menu-button" aria-label="Menu">☰</button>
+    <label class="global-search"><span>⌕</span><input type="search" id="globalSearch" placeholder="Cari target..." aria-label="Cari target"></label>
+  </div>
+  <div class="top-right">
+    <div class="date-pill">▦ &nbsp; Senin, 12 Oktober 2026</div>
+    <span class="notification" title="Notifikasi">♧</span>
+    <div class="manager">
+      <div class="avatar">M</div>
+      <span class="manager-label">Manajer</span>
+      <span class="manager-chevron">⌄</span>
+    </div>
+  </div>
+</header>
+
+  <section class="content">
+
+   <div class="page-heading">
+    <div><div class="breadcrumbs">Dashboard / Target</div><h1>Target Karyawan</h1><p>Kelola target kerja dan pantau progres setiap karyawan Divisi Bisnis.</p></div>
+    <button class="btn btn-primary" onclick="openModal()">＋ Tambah Target</button>
+
+   </div>
+
+   <div class="stats">
+
+    <div class="stat"><div class="stat-top">Total Target Aktif <span class="stat-icon">◎</span></div><div class="stat-value" id="totalStat">12</div><div class="stat-note">Target pada periode ini</div></div>
+
+    <div class="stat"><div class="stat-top">Sesuai Rencana <span class="stat-icon">✓</span></div><div class="stat-value" id="onTrackStat">7</div><div class="stat-note"><span class="good">● On track</span> — progres sesuai rencana</div></div>
+
+    <div class="stat"><div class="stat-top">Perlu Perhatian <span class="stat-icon">⚑</span></div><div class="stat-value" id="watchStat">3</div><div class="stat-note">Perlu pemantauan lebih lanjut</div></div>
+
+    <div class="stat"><div class="stat-top">Tertinggal <span class="stat-icon">↘</span></div><div class="stat-value" id="behindStat">2</div><div class="stat-note">Progres di bawah rencana</div></div>
+
+   </div>
+
+   <div class="panel">
+
+    <div class="panel-head"><div><h2>Daftar Target</h2><p>Target individu dan progres berdasarkan periode yang dipilih.</p></div><div class="filters"><input id="searchInput" class="control search" placeholder="⌕ Cari nama atau target..." oninput="renderTable()"><select id="periodFilter" class="control" onchange="renderTable()"><option value="Semua">Semua Periode</option><option>Oktober 2026</option><option>Q4 2026</option><option>Tahunan 2026</option></select><select id="statusFilter" class="control" onchange="renderTable()"><option value="Semua">Semua Status</option><option>On track</option><option>Perlu perhatian</option><option>Tertinggal</option></select></div></div>
+
+    <div class="table-wrap"><table><thead><tr><th>KARYAWAN</th><th>TARGET</th><th>PERIODE</th><th>PROGRES</th><th>STATUS</th><th>AKSI</th></tr></thead><tbody id="targetRows"></tbody></table></div>
+
+    <div class="table-foot"><span id="rowCount">Menampilkan 6 target</span><div class="foot-buttons"><button disabled>‹</button><button>1</button><button disabled>›</button></div></div>
+
+   </div>
+
+   <div class="bottom-grid">
+
+    <div class="panel"><div class="panel-head"><div><h2>Perlu Perhatian</h2><p>Target dengan progres yang perlu ditinjau manager.</p></div></div><div class="insight" id="attentionList"></div></div>
+
+    <div class="panel"><div class="panel-head"><div><h2>Ringkasan Progres</h2><p>Rata-rata progres target periode Oktober 2026.</p></div></div><div class="period-summary"><div class="summary-line"><b>Keseluruhan target</b><strong id="avgProgress">68%</strong></div><div class="summary-bar"><span id="avgBar" style="width:68%"></span></div><div class="summary-line"><span>On track</span><b id="onTrackPercent">58%</b></div><div class="summary-bar"><span id="onTrackBar" style="width:58%;background:#16a34a"></span></div><div class="summary-line"><span>Perlu perhatian / tertinggal</span><b id="riskPercent">42%</b></div><div class="summary-bar"><span id="riskBar" style="width:42%;background:#f59e0b"></span></div><p class="subtle">* Data contoh untuk rancangan antarmuka.</p></div></div>
+
+   </div>
+
+  </section>
+
+ </main>
+
+</div>
+
+<div class="modal-backdrop" id="targetModal" onclick="if(event.target===this)closeModal()">
+
+<div class="modal"><div class="modal-head"><h2 id="modalTitle">Tambah Target</h2><button class="close" onclick="closeModal()">×</button></div>
+
+ <form id="targetForm" onsubmit="saveTarget(event)">
+
+ <div class="modal-body"><div class="form-grid">
+
+  <div class="field"><label for="employee">Nama Karyawan *</label><select id="employee" required><option value="">Pilih karyawan</option><option>Andi Pratama</option><option>Rina Amelia</option><option>Dimas Saputra</option><option>Siti Rahma</option><option>Fajar Nugraha</option><option>Nadia Putri</option></select></div>
+
+  <div class="field"><label for="period">Periode *</label><select id="period" required><option>Oktober 2026</option><option>Q4 2026</option><option>Tahunan 2026</option></select></div>
+
+  <div class="field full"><label for="targetName">Nama Target *</label><input id="targetName" placeholder="Contoh: Mendapatkan 20 prospek baru" required></div>
+
+  <div class="field"><label for="metric">Indikator / Satuan *</label><input id="metric" placeholder="Contoh: jumlah prospek" required></div>
+
+  <div class="field"><label for="targetValue">Target yang Diharapkan *</label><input id="targetValue" type="number" min="1" placeholder="Contoh: 20" required></div>
+
+  <div class="field"><label for="actualValue">Realisasi Saat Ini</label><input id="actualValue" type="number" min="0" value="0" required></div>
+
+  <div class="field"><label for="dueDate">Batas Waktu</label><input id="dueDate" type="date" value="2026-10-31"></div>
+
+  <div class="field full"><label for="notes">Catatan</label><textarea id="notes" placeholder="Tambahkan keterangan target (opsional)"></textarea></div>
+
+ </div></div>
+
+ <div class="modal-foot"><button type="button" class="btn" onclick="closeModal()">Batal</button><button class="btn btn-primary" type="submit">Simpan Target</button></div>
+
+ </form>
+
+</div>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+
+    const produkToggle = document.getElementById("produkToggle");
+    const produkGroup = produkToggle.closest(".nav-group");
+    const submenuLinks = document.querySelectorAll(".submenu-link");
+
+    // Buka atau tutup submenu Produk
+    produkToggle.addEventListener("click", () => {
+        produkGroup.classList.toggle("open");
+    });
+
+
+let targets=[
+
+{id:1,employee:'Andi Pratama',initials:'AP',target:'Mendapatkan prospek baru',metric:'prospek',period:'Oktober 2026',actual:18,goal:20,status:'On track',due:'2026-10-31',notes:'Fokus pada prospek dari kanal digital.'},
+
+{id:2,employee:'Rina Amelia',initials:'RA',target:'Menindaklanjuti calon klien',metric:'calon klien',period:'Oktober 2026',actual:12,goal:20,status:'Perlu perhatian',due:'2026-10-31',notes:''},
+
+{id:3,employee:'Dimas Saputra',initials:'DS',target:'Mencapai nilai penjualan',metric:'juta rupiah',period:'Oktober 2026',actual:35,goal:50,status:'On track',due:'2026-10-31',notes:''},
+
+{id:4,employee:'Siti Rahma',initials:'SR',target:'Membuat laporan penawaran',metric:'dokumen',period:'Q4 2026',actual:4,goal:10,status:'Tertinggal',due:'2026-12-31',notes:'Perlu evaluasi hambatan.'},
+
+{id:5,employee:'Fajar Nugraha',initials:'FN',target:'Menjalin kerja sama baru',metric:'mitra',period:'Oktober 2026',actual:3,goal:5,status:'On track',due:'2026-10-31',notes:''},
+
+{id:6,employee:'Nadia Putri',initials:'NP',target:'Menjaga tindak lanjut klien',metric:'tindak lanjut',period:'Tahunan 2026',actual:55,goal:100,status:'Perlu perhatian',due:'2026-12-31',notes:''}
+
+];
+
+let editingId=null;
+
+const initials=name=>name.split(' ').map(s=>s[0]).slice(0,2).join('').toUpperCase();
+
+const percent=t=>Math.min(100,Math.round(t.actual/t.goal*100));
+
+const statusClass=s=>s==='On track'?'on-track':s==='Perlu perhatian'?'watch':'behind';
+
+document.getElementById('globalSearch').addEventListener('input', function(){document.getElementById('searchInput').value=this.value;renderTable();});
+function renderTable(){
+
+const query=document.getElementById('searchInput').value.toLowerCase(),period=document.getElementById('periodFilter').value,status=document.getElementById('statusFilter').value;
+
+const rows=targets.filter(t=>(t.employee+' '+t.target).toLowerCase().includes(query)&&(period==='Semua'||t.period===period)&&(status==='Semua'||t.status===status));
+
+document.getElementById('targetRows').innerHTML=rows.map(t=>`<tr><td><div class="employee"><div class="emp-avatar">${t.initials}</div><div><strong>${escapeHtml(t.employee)}</strong><small>Divisi Bisnis</small></div></div></td><td><div class="target-title">${escapeHtml(t.target)}</div><div class="subtle">Target: ${t.goal} ${escapeHtml(t.metric)}</div></td><td>${escapeHtml(t.period)}<div class="subtle">Batas: ${t.due?new Date(t.due+'T00:00:00').toLocaleDateString('id-ID',{day:'2-digit',month:'short',year:'numeric'}):'—'}</div></td><td><div class="progress"><div class="progress-line"><span style="width:${percent(t)}%;${t.status==='Tertinggal'?'background:#dc2626':t.status==='Perlu perhatian'?'background:#f59e0b':''}"></span></div><small>${t.actual}/${t.goal} ${escapeHtml(t.metric)} · ${percent(t)}%</small></div></td><td><span class="status ${statusClass(t.status)}">${t.status}</span></td><td><div class="actions"><button class="icon-btn" title="Lihat detail" onclick="viewTarget(${t.id})">⌕</button><button class="icon-btn" title="Edit" onclick="editTarget(${t.id})">✎</button><button class="icon-btn" title="Hapus" onclick="deleteTarget(${t.id})">×</button></div></td></tr>`).join('');
+
+document.getElementById('rowCount').textContent=`Menampilkan ${rows.length} dari ${targets.length} target`;
+
+updateSummary();
+
+}
+
+function updateSummary(){
+
+const counts={'On track':0,'Perlu perhatian':0,'Tertinggal':0};targets.forEach(t=>counts[t.status]++);
+
+document.getElementById('totalStat').textContent=targets.length;
+
+document.getElementById('onTrackStat').textContent=counts['On track'];
+
+document.getElementById('watchStat').textContent=counts['Perlu perhatian'];
+
+document.getElementById('behindStat').textContent=counts['Tertinggal'];
+
+const avg=targets.length?Math.round(targets.reduce((s,t)=>s+percent(t),0)/targets.length):0;
+
+const safe=targets.length?Math.round(counts['On track']/targets.length*100):0, risk=100-safe;
+
+document.getElementById('avgProgress').textContent=avg+'%';document.getElementById('avgBar').style.width=avg+'%';
+
+document.getElementById('onTrackPercent').textContent=safe+'%';document.getElementById('onTrackBar').style.width=safe+'%';
+
+document.getElementById('riskPercent').textContent=risk+'%';document.getElementById('riskBar').style.width=risk+'%';
+
+const attention=targets.filter(t=>t.status!=='On track').sort((a,b)=>percent(a)-percent(b)).slice(0,3);
+
+document.getElementById('attentionList').innerHTML=attention.length?attention.map(t=>`<div class="insight-row"><div class="insight-mark">⚑</div><div><strong>${escapeHtml(t.employee)}</strong><small>${escapeHtml(t.target)} · ${percent(t)}% tercapai</small></div><span class="status ${statusClass(t.status)}">${t.status}</span></div>`).join(''):'<p class="subtle">Belum ada target yang perlu perhatian.</p>';
+
+}
+
+function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+
+function openModal(){editingId=null;document.getElementById('targetForm').reset();document.getElementById('actualValue').value=0;document.getElementById('modalTitle').textContent='Tambah Target';document.getElementById('targetModal').classList.add('show');}
+
+function closeModal(){document.getElementById('targetModal').classList.remove('show');}
+
+function editTarget(id){const t=targets.find(x=>x.id===id);if(!t)return;editingId=id;document.getElementById('modalTitle').textContent='Edit Target';document.getElementById('employee').value=t.employee;document.getElementById('period').value=t.period;document.getElementById('targetName').value=t.target;document.getElementById('metric').value=t.metric;document.getElementById('targetValue').value=t.goal;document.getElementById('actualValue').value=t.actual;document.getElementById('dueDate').value=t.due;document.getElementById('notes').value=t.notes||'';document.getElementById('targetModal').classList.add('show');}
+
+function saveTarget(e){e.preventDefault();const goal=Number(document.getElementById('targetValue').value),actual=Number(document.getElementById('actualValue').value);if(goal<=0||actual<0){notify('Periksa kembali nilai target dan realisasi.');return;}const old=targets.find(t=>t.id===editingId);const data={id:editingId||Date.now(),employee:document.getElementById('employee').value,initials:initials(document.getElementById('employee').value),target:document.getElementById('targetName').value.trim(),metric:document.getElementById('metric').value.trim(),period:document.getElementById('period').value,goal,actual,due:document.getElementById('dueDate').value,notes:document.getElementById('notes').value.trim(),status:actual/goal>=.75?'On track':actual/goal>=.4?'Perlu perhatian':'Tertinggal'};if(old)targets=targets.map(t=>t.id===editingId?data:t);else targets.unshift(data);closeModal();renderTable();notify(old?'Target berhasil diperbarui.':'Target berhasil ditambahkan.');}
+
+function deleteTarget(id){const t=targets.find(x=>x.id===id);if(t&&confirm(`Hapus target "${t.target}" milik ${t.employee}?`)){targets=targets.filter(x=>x.id!==id);renderTable();notify('Target berhasil dihapus.');}}
+
+function viewTarget(id){const t=targets.find(x=>x.id===id);if(t)alert(`DETAIL TARGET\n\nKaryawan: ${t.employee}\nTarget: ${t.target}\nIndikator: ${t.metric}\nRealisasi: ${t.actual}/${t.goal} (${percent(t)}%)\nPeriode: ${t.period}\nStatus: ${t.status}\nBatas waktu: ${t.due||'-'}\nCatatan: ${t.notes||'-'}`);}
+
+function notify(message){const el=document.getElementById('toast');el.textContent=message;el.classList.add('show');setTimeout(()=>el.classList.remove('show'),2600);}
+
+renderTable();
+
+</script>
+
+</body>
+
+</html>

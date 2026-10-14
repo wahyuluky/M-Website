@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard | Business Monitor</title>
+  <!-- Basic Icons -->
+  <link href="https://cdn.boxicons.com/3.0.8/fonts/basic/boxicons.min.css" rel="stylesheet">
+  <!-- Filled Icons -->
+  <link href="https://cdn.boxicons.com/3.0.8/fonts/filled/boxicons-filled.min.css" rel="stylesheet">
+  <!-- Brand Icons -->
+  <link href="https://cdn.boxicons.com/3.0.8/fonts/brands/boxicons-brands.min.css" rel="stylesheet">
+  
+  <style>
+    :root {
+      --navy: #172b4d;
+      --navy-light: #223b62;
+      --blue: #4f46e5;
+      --blue-soft: #eff6ff;
+      --bg: #f5f7fb;
+      --surface: #ffffff;
+      --text: #172b4d;
+      --muted: #718096;
+      --border: #e5eaf2;
+      --green: #059669;
+      --green-soft: #dff7ed;
+      --orange: #c77716;
+      --orange-soft: #fff0d9;
+      --purple: #7c3aed;
+      --purple-soft: #f0e8ff;
+      --red: #dc2626;
+      --red-soft: #fee8e8;
+      --shadow: 0 4px 18px rgba(23, 43, 77, .04);
+    }
+
+    * { 
+      box-sizing: border-box; 
+    }
+
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--text);
+      background: var(--bg);
+      font-size: 14px;
+    }
+    button, input { font: inherit; }
+    a { color: inherit; text-decoration: none; }
+
+    .app { min-height: 100vh; }
+    .sidebar {
+      width: 250px;
+      background: #111827;
+      color: #fff;
+      position: fixed;
+      inset: 0 auto 0 0;
+      display: flex;
+      flex-direction: column;
+      padding: 22px 14px 16px;
+      z-index: 10;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      padding: 0 8px 24px;
+      border-bottom: 1px solid rgba(255,255,255,.12);
+      margin-bottom: 22px;
+    }
+    .brand-mark {
+      width: 42px; height: 42px; border-radius: 12px;
+      display: grid; place-items: center;
+      background: linear-gradient(145deg, #60a5fa, #2563eb);
+      color: white; font-size: 22px; font-weight: 800;
+    }
+    .brand-name { font-size: 16px; font-weight: 750; letter-spacing: -.3px; }
+    .brand-sub { color: #aebdd5; font-size: 12px; margin-top: 4px; }
+    .nav-label {
+      color: #91a4c1; text-transform: uppercase; letter-spacing: 1.2px;
+      font-size: 10px; font-weight: 700; padding: 0 12px 10px;
+    }
+
+/* Navigasi utama */
+.nav {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.nav > a,
+.nav-product-link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    min-height: 42px;
+    padding: 12px 13px;
+    border-radius: 9px;
+    color: #d3deef;
+    font-size: 13px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: background 0.18s ease, color 0.18s ease;
+}
+
+.nav > a:hover,
+.nav-product-link:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: white;
+}
+
+.nav > a.active,
+.nav-product-link.active {
+    background: var(--blue);
+    color: white;
+    box-shadow: 0 5px 14px rgba(37, 99, 235, 0.24);
+}
+
+/* Ikon dan teks sejajar */
+.nav-icon {
+    width: 22px;
+    min-width: 22px;
+    text-align: center;
+    font-size: 20px;
+    height: 22px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Baris menu Produk */
+.nav-product-row {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    min-height: 42px;
+    border-radius: 9px;
+}
+
+.nav-product-row:hover {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.nav-product-link {
+    flex: 1;
+    min-width: 0;
+}
+
+.nav-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 36px;
+    height: 42px;
+    padding: 0;
+    border: none;
+    border-radius: 8px;
+    background: transparent;
+    color: #d3deef;
+    cursor: pointer;
+}
+
+.nav-toggle:hover {
+    color: white;
+}
+
+.arrow-icon {
+    font-size: 18px;
+    transition: transform 0.3s ease;
+}
+
+.nav-group.open .arrow-icon {
+    transform: rotate(180deg);
+}
+
+/* Submenu */
+.submenu {
+    display: none;
+    padding: 5px 0 5px 20px;
+}
+
+.nav-group.open .submenu {
+    display: block;
+}
+
+.submenu-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 38px;
+    margin-top: 4px;
+    padding: 10px 12px;
+    border-radius: 8px;
+    color: #c4d1e5;
+    text-decoration: none;
+    font-size: 12px;
+}
+
+.submenu-link:hover,
+.submenu-link.active {
+    background: rgba(255, 255, 255, 0.12);
+    color: white;
+}
+
+.submenu-link i {
+    width: 18px;
+    min-width: 18px;
+    text-align: center;
+    font-size: 16px;
+}
+
+    
+
+    .sidebar-bottom { margin-top: auto; border-top: 1px solid rgba(255,255,255,.12); padding-top: 17px; }
+    .profile { display: flex; align-items: center; gap: 10px; padding: 4px 7px 16px; }
+    .avatar {
+      display: grid; place-items: center; flex-shrink: 0;
+      width: 37px; height: 37px; border-radius: 50%;
+      background: #e5edfb; color: #31517f; font-weight: 750;
+    }
+    .profile-name { font-weight: 650; font-size: 14px; }
+    .profile-role { color: #aebdd5; font-size: 12px; margin-top: 4px; }
+    .logout { display: flex; align-items: center; gap: 10px; color: #c4d1e5; padding: 10px 8px; font-size: 14px; }
+
+    .main { margin-left: 238px; min-height: 100vh; }
+    .topbar {
+      height: 70px; background: var(--surface); border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between; gap: 20px;
+      padding: 0 30px; position: sticky; top: 0; z-index: 5;
+    }
+    .top-left, .top-right { display: flex; align-items: center; gap: 16px; }
+    .menu-button {
+      border: 0; background: #f1f5fb; color: var(--navy); width: 36px; height: 36px;
+      border-radius: 9px; cursor: pointer; font-size: 18px;
+    }
+    .search {
+      width: min(340px, 30vw); height: 38px; border: 1px solid var(--border);
+      border-radius: 9px; display: flex; align-items: center; gap: 9px;
+      padding: 0 12px; background: #f9fbfe; color: #8190a7;
+    }
+    .search input { border: 0; outline: 0; background: transparent; width: 100%; color: var(--text); font-size: 12px; }
+    .date-pill { background: #f3f6fb; padding: 10px 13px; border-radius: 8px; font-size: 12px; color: #526582; white-space: nowrap; }
+    .manager { display: flex; align-items: center; gap: 9px; font-size: 12px; font-weight: 650; }
+    .manager .avatar { width: 34px; height: 34px; }
+    .content { padding: 27px 30px 34px; max-width: 1600px; margin: 0 auto; }
+    .page-heading { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; margin-bottom: 23px; }
+    .eyebrow { color: #8190a7; font-size: 11px; margin-bottom: 8px; }
+    h1 { font-size: 25px; line-height: 1.2; margin: 0; letter-spacing: -.7px; }
+    .subtitle { margin: 8px 0 0; color: var(--muted); font-size: 13px; }
+    .primary-btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      border: 0; border-radius: 8px; background: var(--blue); color: white;
+      padding: 11px 15px; font-size: 12px; font-weight: 650; cursor: pointer;
+      box-shadow: 0 4px 10px rgba(37,99,235,.16);
+    }
+    .primary-btn:hover { background: #1d4ed8; }
+
+    .stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 15px; margin-bottom: 22px; }
+    .stat-card {
+      background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+      padding: 18px; display: flex; align-items: flex-start; gap: 13px; box-shadow: var(--shadow);
+      min-width: 0;
+    }
+    .stat-icon { width: 43px; height: 43px; display: grid; place-items: center; border-radius: 12px; font-size: 19px; flex-shrink: 0; }
+    .icon-blue { background: var(--blue-soft); color: var(--blue); }
+    .icon-green { background: var(--green-soft); color: var(--green); }
+    .icon-orange { background: var(--orange-soft); color: var(--orange); }
+    .icon-purple { background: var(--purple-soft); color: var(--purple); }
+    .stat-label { color: #667792; font-size: 12px; margin: 2px 0 8px; }
+    .stat-value { font-size: 27px; line-height: 1; font-weight: 750; letter-spacing: -.8px; }
+    .stat-note { color: #8391a6; font-size: 10px; margin-top: 8px; }
+
+    .dashboard-grid { display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(300px, .95fr); gap: 18px; align-items: start; }
+    .panel { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; box-shadow: var(--shadow); min-width: 0; }
+    .panel-header { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 18px 20px; border-bottom: 1px solid #edf0f5; }
+    .panel-title { margin: 0; font-size: 14px; font-weight: 750; }
+    .panel-link { color: var(--blue); font-size: 11px; font-weight: 650; }
+    .panel-body { padding: 18px 20px; }
+    .target-row { margin-bottom: 20px; }
+    .target-row:last-child { margin-bottom: 0; }
+    .target-meta { display: flex; justify-content: space-between; gap: 12px; margin-bottom: 9px; }
+    .target-name { font-size: 12px; font-weight: 650; }
+    .target-owner { font-size: 10px; color: #8996a9; margin-top: 4px; }
+    .target-percent { font-size: 11px; font-weight: 700; white-space: nowrap; }
+    .progress { height: 7px; border-radius: 20px; background: #e9eef6; overflow: hidden; }
+    .progress-bar { height: 100%; border-radius: inherit; background: var(--blue); }
+    .progress-bar.green { background: #10a878; }
+    .progress-bar.orange { background: #f59e0b; }
+    .progress-bar.purple { background: #8b5cf6; }
+
+    .status-list { display: grid; gap: 16px; }
+    .status-item { display: flex; align-items: center; gap: 10px; }
+    .status-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+    .dot-green { background: #10a878; } .dot-blue { background: var(--blue); } .dot-orange { background: #f59e0b; }
+    .status-name { color: #566780; font-size: 12px; flex: 1; }
+    .status-count { font-weight: 700; font-size: 12px; }
+    .status-percent { color: #8996a9; font-size: 11px; width: 40px; text-align: right; }
+
+    .activity-panel { margin-top: 18px; }
+    .table-tools { display: flex; gap: 10px; align-items: center; }
+    .select {
+      border: 1px solid var(--border); border-radius: 7px; padding: 8px 10px;
+      color: #5e6f88; background: white; font-size: 11px; outline: 0;
+    }
+    .table-wrap { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; white-space: nowrap; }
+    th { background: #f8fafd; color: #718096; text-align: left; font-size: 10px; font-weight: 700; padding: 13px 16px; }
+    td { border-top: 1px solid #edf1f6; padding: 14px 16px; font-size: 11px; color: #405471; }
+    tbody tr:hover { background: #fbfdff; }
+    .employee-cell { display: flex; align-items: center; gap: 9px; }
+    .employee-cell .avatar { width: 31px; height: 31px; font-size: 10px; }
+    .employee-name { color: var(--text); font-weight: 650; font-size: 11px; }
+    .employee-role { color: #8b98ab; font-size: 10px; margin-top: 3px; }
+    .type-badge, .status-badge { display: inline-flex; align-items: center; padding: 5px 8px; border-radius: 20px; font-size: 10px; font-weight: 650; }
+    .type-target { color: #1d4ed8; background: #eaf2ff; }
+    .type-commitment { color: #6d28d9; background: #f0e8ff; }
+    .type-daily { color: #047857; background: #ddf8ed; }
+    .type-achievement { color: #b45309; background: #fff0d9; }
+    .status-done { color: #047857; background: #ddf8ed; }
+    .status-progress { color: #1d4ed8; background: #eaf2ff; }
+    .status-pending { color: #b45309; background: #fff0d9; }
+    .mini-progress { display: flex; align-items: center; gap: 8px; min-width: 100px; }
+    .mini-progress .progress { width: 62px; height: 5px; }
+    .mini-progress span { font-size: 10px; color: #62728a; }
+    .action-btn { border: 1px solid var(--border); background: white; color: #60738f; border-radius: 6px; padding: 5px 7px; cursor: pointer; margin-right: 3px; }
+    .action-btn:hover { color: var(--blue); border-color: #b8ccf8; }
+    .panel-footer { padding: 13px 18px; display: flex; align-items: center; justify-content: space-between; gap: 12px; border-top: 1px solid #edf1f6; color: #8996a9; font-size: 10px; }
+    .pagination { display: flex; gap: 5px; }
+    .page-btn { border: 1px solid var(--border); background: white; color: #60738f; border-radius: 6px; width: 27px; height: 27px; font-size: 10px; }
+    .page-btn.active { background: var(--blue); color: white; border-color: var(--blue); }
+    .right-column { display: grid; gap: 18px; }
+    .employee-summary { display: grid; gap: 14px; }
+    .employee-summary-row { display: flex; align-items: center; gap: 9px; }
+    .employee-summary-row .avatar { width: 32px; height: 32px; font-size: 10px; }
+    .employee-info { flex: 1; min-width: 0; }
+    .employee-info .employee-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .employee-score { width: 88px; }
+    .employee-score-top { display: flex; justify-content: flex-end; margin-bottom: 5px; color: #718096; font-size: 10px; }
+    .employee-score .progress { height: 5px; }
+    .quick-note { margin-top: 18px; border: 1px solid #dce8fc; background: #f5f9ff; border-radius: 10px; padding: 13px 14px; }
+    .quick-note strong { display: block; font-size: 11px; margin-bottom: 5px; }
+    .quick-note p { color: #718096; font-size: 10px; line-height: 1.6; margin: 0; }
+
+    @media (max-width: 1200px) {
+      .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .dashboard-grid { grid-template-columns: 1fr; }
+      .right-column { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @media (max-width: 800px) {
+      .sidebar { width: 72px; padding: 18px 9px; }
+      .brand { justify-content: center; padding: 0 0 20px; }
+      .brand-copy, .nav-label, .nav-text, .profile-copy, .logout-text { display: none; }
+      .nav a { justify-content: center; padding: 12px 8px; }
+      .nav-icon { font-size: 18px; }
+      .profile { justify-content: center; padding-inline: 0; }
+      .logout { justify-content: center; }
+      .main { margin-left: 72px; }
+      .topbar { padding: 0 18px; }
+      .date-pill { display: none; }
+      .content { padding: 22px 18px; }
+      .right-column { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 560px) {
+      .topbar { height: 60px; gap: 10px; }
+      .top-left, .top-right { gap: 8px; }
+      .search { width: 42vw; }
+      .manager .manager-label { display: none; }
+      .content { padding: 18px 12px; }
+      .page-heading { flex-direction: column; }
+      h1 { font-size: 22px; }
+      .stats { grid-template-columns: 1fr 1fr; gap: 9px; }
+      .stat-card { padding: 12px; gap: 9px; }
+      .stat-icon { width: 34px; height: 34px; font-size: 16px; }
+      .stat-value { font-size: 22px; }
+      .stat-label { font-size: 10px; }
+      .stat-note { font-size: 9px; }
+      .panel-header, .panel-body { padding: 14px; }
+      .panel-header { align-items: flex-start; }
+      .table-tools { flex-wrap: wrap; }
+      .panel-footer { align-items: flex-start; flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand">
+        <i class="bx bx-bar-chart-big brand-mark"></i>
+        <div class="brand-copy">
+          <div class="brand-name">Business Monitor</div>
+          <div class="brand-sub">Divisi Bisnis</div>
+        </div>
+      </div>
+
+      <div class="nav-label">Menu Utama</div>
+      <nav class="nav" aria-label="Navigasi utama"> 
+        <a class="active" href="dashboard.html">
+            <i class="bx bx-home-alt nav-icon"></i>
+            <span class="nav-text">Dashboard</span>
+        </a>
+        <a href="employees.html">
+            <i class="bx bx-user nav-icon"></i>
+            <span class="nav-text">Data Karyawan</span>
+        </a> 
+
+        <!-- Menu Produk dengan submenu -->
+        <div class="nav-group">
+            <div class="nav-product-row">
+                <a href="products.html" class="nav-product-link">
+                    <i class="bx bx-package nav-icon"></i>
+                    <span class="nav-text">Produk</span>
+                </a>
+
+                <button
+                    type="button"
+                    class="nav-toggle"
+                    id="produkToggle"
+                    aria-label="Buka submenu Produk"
+                    aria-expanded="false"
+                >
+                    <i class="bx bx-chevron-down arrow-icon"></i>
+                </button>
+            </div>
+
+            <div class="submenu" id="produkSubmenu">
+                <a href="./bank.html" class="submenu-link active" data-page="bank">
+                    <i class="bx bx-buildings"></i>
+                    <span>Data Bank</span>
+                </a>
+
+                <a href="product.html" class="submenu-link" data-page="produk">
+                    <i class="bx bx-box"></i>
+                    <span>Data Produk</span>
+                </a>
+            </div>
+        </div>
+
+        <a href="targets.html">
+            <i class="bx bx-bullseye nav-icon"></i>
+            <span class="nav-text">Target</span>
+        </a>
+        <a href="commitments.html">
+            <i class="bx bx-check-shield nav-icon"></i>
+            <span class="nav-text">Komitmen</span>
+        </a>
+        <a href="daily-activities.html">
+            <i class="bx bx-calendar-check nav-icon"></i>
+            <span class="nav-text">Daily Activity</span>
+        </a>
+        <a href="achievements.html">
+            <i class="bx bx-trophy nav-icon"></i>
+            <span class="nav-text">Pencapaian</span>
+        </a>
+        <a href="reports.html">
+            <i class="bx bx-file nav-icon"></i>
+            <span class="nav-text">Laporan</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-bottom">
+        <div class="profile">
+          <div class="avatar">M</div>
+          <div class="profile-copy">
+            <div class="profile-name">Manajer Bisnis</div>
+            <div class="profile-role">Administrator</div>
+          </div>
+        </div>
+        <a class="logout" href="#"><span>↪</span><span class="logout-text">Keluar</span></a>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div class="top-left">
+          <button class="menu-button" aria-label="Menu">☰</button>
+          <label class="search">
+            <span>⌕</span>
+            <input type="search" placeholder="Cari karyawan..." aria-label="Cari karyawan" />
+          </label>
+        </div>
+        <div class="top-right">
+          <div class="date-pill">▦ &nbsp; Senin, 12 Oktober 2026</div>
+          <span aria-label="Notifikasi" title="Notifikasi">♧</span>
+          <div class="manager">
+            <div class="avatar">M</div>
+            <span class="manager-label">Manajer</span>
+            <span style="color:#8190a7">⌄</span>
+          </div>
+        </div>
+      </header>
+
+      <section class="content">
+        <div class="page-heading">
+          <div>
+            <div class="eyebrow">Dashboard / Ringkasan</div>
+            <h1>Dashboard Monitoring</h1>
+            <p class="subtitle">Pantau target, komitmen, aktivitas harian, dan pencapaian karyawan Divisi Bisnis.</p>
+          </div>
+          <a class="primary-btn" href="targets.html">＋ Tambah Target</a>
+        </div>
+
+        <section class="stats" aria-label="Ringkasan">
+          <article class="stat-card">
+            <div class="stat-icon icon-blue">♙</div>
+            <div>
+              <div class="stat-label">Total Karyawan</div>
+              <div class="stat-value">12</div>
+              <div class="stat-note">11 aktif · 1 nonaktif</div>
+            </div>
+          </article>
+          <article class="stat-card">
+            <div class="stat-icon icon-green">◎</div>
+            <div>
+              <div class="stat-label">Target Aktif</div>
+              <div class="stat-value">18</div>
+              <div class="stat-note">10 selesai · 6 dalam proses</div>
+            </div>
+          </article>
+          <article class="stat-card">
+            <div class="stat-icon icon-purple">♧</div>
+            <div>
+              <div class="stat-label">Komitmen Terbuka</div>
+              <div class="stat-value">8</div>
+              <div class="stat-note">Perlu dipantau manajer</div>
+            </div>
+          </article>
+          <article class="stat-card">
+            <div class="stat-icon icon-orange">▦</div>
+            <div>
+              <div class="stat-label">Aktivitas Hari Ini</div>
+              <div class="stat-value">34</div>
+              <div class="stat-note">26 aktivitas telah selesai</div>
+            </div>
+          </article>
+        </section>
+
+        <section class="dashboard-grid">
+          <div>
+            <article class="panel">
+              <div class="panel-header">
+                <h2 class="panel-title">Progres Target Karyawan</h2>
+                <a class="panel-link" href="targets.html">Lihat semua →</a>
+              </div>
+              <div class="panel-body">
+                <div class="target-row">
+                  <div class="target-meta">
+                    <div><div class="target-name">Mencapai target penjualan bulanan</div><div class="target-owner">Andi Pratama</div></div>
+                    <div class="target-percent">75%</div>
+                  </div>
+                  <div class="progress"><div class="progress-bar" style="width:75%"></div></div>
+                </div>
+                <div class="target-row">
+                  <div class="target-meta">
+                    <div><div class="target-name">Menambah pelanggan baru</div><div class="target-owner">Siti Rahma</div></div>
+                    <div class="target-percent">50%</div>
+                  </div>
+                  <div class="progress"><div class="progress-bar purple" style="width:50%"></div></div>
+                </div>
+                <div class="target-row">
+                  <div class="target-meta">
+                    <div><div class="target-name">Menyelesaikan laporan penjualan</div><div class="target-owner">Budi Santoso</div></div>
+                    <div class="target-percent">100%</div>
+                  </div>
+                  <div class="progress"><div class="progress-bar green" style="width:100%"></div></div>
+                </div>
+                <div class="target-row">
+                  <div class="target-meta">
+                    <div><div class="target-name">Follow-up calon pelanggan</div><div class="target-owner">Rina Agustina</div></div>
+                    <div class="target-percent">35%</div>
+                  </div>
+                  <div class="progress"><div class="progress-bar orange" style="width:35%"></div></div>
+                </div>
+              </div>
+            </article>
+
+            <article class="panel activity-panel">
+              <div class="panel-header">
+                <h2 class="panel-title">Aktivitas Terbaru</h2>
+                <div class="table-tools">
+                  <select class="select" aria-label="Filter jenis aktivitas">
+                    <option>Semua jenis</option><option>Target</option><option>Komitmen</option><option>Daily Activity</option><option>Pencapaian</option>
+                  </select>
+                  <a class="panel-link" href="daily-activities.html">Lihat semua →</a>
+                </div>
+              </div>
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr><th>Karyawan</th><th>Jenis</th><th>Aktivitas</th><th>Tanggal</th><th>Status</th><th>Aksi</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><div class="employee-cell"><div class="avatar">AP</div><div><div class="employee-name">Andi Pratama</div><div class="employee-role">Karyawan</div></div></div></td>
+                      <td><span class="type-badge type-target">Target</span></td>
+                      <td>Mencapai target penjualan bulanan</td><td>12 Okt 2026</td>
+                      <td><span class="status-badge status-progress">Dalam Proses</span></td>
+                      <td><button class="action-btn" aria-label="Lihat detail">↗</button></td>
+                    </tr>
+                    <tr>
+                      <td><div class="employee-cell"><div class="avatar">SR</div><div><div class="employee-name">Siti Rahma</div><div class="employee-role">Karyawan</div></div></div></td>
+                      <td><span class="type-badge type-commitment">Komitmen</span></td>
+                      <td>Menghubungi 10 calon pelanggan</td><td>12 Okt 2026</td>
+                      <td><span class="status-badge status-pending">Belum Selesai</span></td>
+                      <td><button class="action-btn" aria-label="Lihat detail">↗</button></td>
+                    </tr>
+                    <tr>
+                      <td><div class="employee-cell"><div class="avatar">BS</div><div><div class="employee-name">Budi Santoso</div><div class="employee-role">Karyawan</div></div></div></td>
+                      <td><span class="type-badge type-daily">Daily</span></td>
+                      <td>Membuat laporan penjualan</td><td>12 Okt 2026</td>
+                      <td><span class="status-badge status-done">Selesai</span></td>
+                      <td><button class="action-btn" aria-label="Lihat detail">↗</button></td>
+                    </tr>
+                    <tr>
+                      <td><div class="employee-cell"><div class="avatar">RA</div><div><div class="employee-name">Rina Agustina</div><div class="employee-role">Karyawan</div></div></div></td>
+                      <td><span class="type-badge type-achievement">Pencapaian</span></td>
+                      <td>Mendapatkan pelanggan baru</td><td>11 Okt 2026</td>
+                      <td><span class="status-badge status-done">Selesai</span></td>
+                      <td><button class="action-btn" aria-label="Lihat detail">↗</button></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="panel-footer">
+                <span>Menampilkan 4 aktivitas terbaru</span>
+                <div class="pagination"><button class="page-btn active">1</button><button class="page-btn">2</button><button class="page-btn">3</button><button class="page-btn">→</button></div>
+              </div>
+            </article>
+          </div>
+
+          <div class="right-column">
+            <article class="panel">
+              <div class="panel-header"><h2 class="panel-title">Status Monitoring</h2><span style="font-size:11px;color:#8996a9">Bulan ini</span></div>
+              <div class="panel-body">
+                <div class="status-list">
+                  <div class="status-item"><span class="status-dot dot-green"></span><span class="status-name">Selesai</span><span class="status-count">46</span><span class="status-percent">58%</span></div>
+                  <div class="status-item"><span class="status-dot dot-blue"></span><span class="status-name">Dalam Proses</span><span class="status-count">21</span><span class="status-percent">27%</span></div>
+                  <div class="status-item"><span class="status-dot dot-orange"></span><span class="status-name">Belum Selesai</span><span class="status-count">12</span><span class="status-percent">15%</span></div>
+                </div>
+              </div>
+            </article>
+
+            <article class="panel">
+              <div class="panel-header"><h2 class="panel-title">Ringkasan Karyawan</h2><a class="panel-link" href="employees.html">Lihat semua →</a></div>
+              <div class="panel-body">
+                <div class="employee-summary">
+                  <div class="employee-summary-row">
+                    <div class="avatar">BS</div><div class="employee-info"><div class="employee-name">Budi Santoso</div><div class="employee-role">Pencapaian target</div></div>
+                    <div class="employee-score"><div class="employee-score-top">92%</div><div class="progress"><div class="progress-bar green" style="width:92%"></div></div></div>
+                  </div>
+                  <div class="employee-summary-row">
+                    <div class="avatar">AP</div><div class="employee-info"><div class="employee-name">Andi Pratama</div><div class="employee-role">Pencapaian target</div></div>
+                    <div class="employee-score"><div class="employee-score-top">78%</div><div class="progress"><div class="progress-bar" style="width:78%"></div></div></div>
+                  </div>
+                  <div class="employee-summary-row">
+                    <div class="avatar">RA</div><div class="employee-info"><div class="employee-name">Rina Agustina</div><div class="employee-role">Pencapaian target</div></div>
+                    <div class="employee-score"><div class="employee-score-top">65%</div><div class="progress"><div class="progress-bar purple" style="width:65%"></div></div></div>
+                  </div>
+                  <div class="employee-summary-row">
+                    <div class="avatar">SR</div><div class="employee-info"><div class="employee-name">Siti Rahma</div><div class="employee-role">Pencapaian target</div></div>
+                    <div class="employee-score"><div class="employee-score-top">48%</div><div class="progress"><div class="progress-bar orange" style="width:48%"></div></div></div>
+                  </div>
+                </div>
+                <div class="quick-note">
+                  <strong>Catatan Manajer</strong>
+                  <p>Periksa kembali komitmen yang belum selesai dan target yang mendekati tenggat waktu.</p>
+                </div>
+              </div>
+            </article>
+          </div>
+        </section>
+      </section>
+    </main>
+  </div>
+  <script>
+    
+    const produkToggle = document.getElementById("produkToggle");
+    const produkSubmenu = document.getElementById("produkSubmenu");
+    const produkGroup = produkToggle.closest(".nav-group");
+    const submenuLinks = document.querySelectorAll(".submenu-link");
+
+    // Buka atau tutup submenu Produk
+    produkToggle.addEventListener("click", () => {
+        produkGroup.classList.toggle("open");
+    });
+
+   
+
+    // Contoh fungsi untuk menampilkan grafik bank
+    function renderBankChart() {
+        document.getElementById("chartTitle").textContent =
+            "Grafik Data Bank";
+
+        bankChart.data.labels = bankData.map(item => item.name);
+        bankChart.data.datasets[0].data = bankData.map(
+            item => item[currentMetric]
+        );
+
+        bankChart.update();
+    }
+
+    // Contoh fungsi untuk menampilkan grafik produk
+    function renderProductChart() {
+        document.getElementById("chartTitle").textContent =
+            "Grafik Data Produk";
+
+        productChart.data.labels = productData.map(item => item.name);
+        productChart.data.datasets[0].data = productData.map(
+            item => item[currentMetric]
+        );
+
+        productChart.update();
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pencapaian | Business Monitor</title>
+    <link rel="stylesheet" href="achievement.css">
+
+    <!-- Basic Icons -->
+    <link href="https://cdn.boxicons.com/3.0.8/fonts/basic/boxicons.min.css" rel="stylesheet">
+    <!-- Filled Icons -->
+    <link href="https://cdn.boxicons.com/3.0.8/fonts/filled/boxicons-filled.min.css" rel="stylesheet">
+    <!-- Brand Icons -->
+    <link href="https://cdn.boxicons.com/3.0.8/fonts/brands/boxicons-brands.min.css" rel="stylesheet">
+  
+</head>
+<body>
+    <aside class="sidebar">
+        <div class="brand"><i class="bx bx-bar-chart-big brand-mark"></i><div class="brand-copy"><div class="brand-name">Business Monitor</div><div class="brand-sub">Divisi Bisnis</div></div></div>
+        <div class="nav-label">Menu Utama</div>
+        <nav class="nav" aria-label="Navigasi utama">
+            <a href="dashboard.html">
+                <i class="bx bx-home-alt nav-icon"></i>
+                <span class="nav-text">Dashboard</span>
+            </a>
+            <a  href="employees.html">
+                <i class="bx bx-user nav-icon"></i>
+                <span class="nav-text">Data Karyawan</span>
+            </a>
+            
+            <!-- Menu Produk dengan submenu -->
+            <div class="nav-group">
+                <div class="nav-product-row">
+                    <a href="products.html" class="nav-product-link">
+                        <i class="bx bx-package nav-icon"></i>
+                        <span class="nav-text">Produk</span>
+                    </a>
+
+                    <button
+                        type="button"
+                        class="nav-toggle"
+                        id="produkToggle"
+                        aria-label="Buka submenu Produk"
+                        aria-expanded="false"
+                    >
+                        <i class="bx bx-chevron-down arrow-icon"></i>
+                    </button>
+                </div>
+
+                <div class="submenu" id="produkSubmenu">
+                    <a href="bank.html" class="submenu-link active" data-page="bank">
+                        <i class="bx bx-buildings"></i>
+                        <span>Data Bank</span>
+                    </a>
+
+                    <a href="product.html" class="submenu-link" data-page="produk">
+                        <i class="bx bx-box"></i>
+                        <span>Data Produk</span>
+                    </a>
+                </div>
+            </div>
+            <a href="targets.html">
+                <i class="bx bx-bullseye nav-icon"></i>
+                <span class="nav-text">Target</span>
+            </a>
+            <a href="commitments.html">
+                <i class="bx bx-check-shield nav-icon"></i>
+                <span class="nav-text">Komitmen</span>
+            </a>
+            <a href="daily-activities.html">
+                <i class="bx bx-calendar-check nav-icon"></i>
+                <span class="nav-text">Daily Activity</span>
+            </a>
+            <a class="active"href="achievements.html">
+                <i class="bx bx-trophy nav-icon"></i>
+                <span class="nav-text">Pencapaian</span>
+            </a>
+            <a href="reports.html">
+                <i class="bx bx-file nav-icon"></i>
+                <span class="nav-text">Laporan</span>
+            </a>
+        </nav>
+        <div class="sidebar-bottom">
+        <div class="profile"><div class="avatar">M</div><div class="profile-copy"><div class="profile-name">Manajer Bisnis</div><div class="profile-role">Administrator</div></div></div>
+        <a class="logout" href="#"><span>↪</span><span class="logout-text">Keluar</span></a>
+        </div>
+    </aside>
+
+    <main class="main">
+        <header class="topbar">
+            <div class="top-left"><button class="menu-button" aria-label="Menu">☰</button><label class="search"><span>⌕</span><input type="search" id="globalSearch" placeholder="Cari karyawan..." aria-label="Cari karyawan"></label></div>
+            <div class="top-right"><div class="date-pill">▦ &nbsp; Senin, 12 Oktober 2026</div><span title="Notifikasi">♧</span><div class="manager"><div class="avatar">M</div><span class="manager-label">Manajer</span><span style="color:#8190a7">⌄</span></div></div>
+        </header>
+
+        <section class="content">
+            <div class="page-header">
+                <div>
+                    <p class="breadcrumbs">Dashboard / Pencapaian</p>
+                    <h1>Pencapaian</h1>
+                    <p class="subtitle">Catat dan evaluasi hasil kerja karyawan Divisi Bisnis.</p>
+                </div>
+                <button class="primary-btn" onclick="openForm()">
+                    + Tambah Pencapaian
+                </button>
+            </div>
+
+            <section class="stats">
+                <article class="stat-card">
+                    <span>Total Pencapaian</span>
+                    <strong id="total">0</strong>
+                </article>
+                <article class="stat-card">
+                    <span>Terverifikasi</span>
+                    <strong id="verified">0</strong>
+                </article>
+                <article class="stat-card">
+                    <span>Menunggu Verifikasi</span>
+                    <strong id="pending">0</strong>
+                </article>
+                <article class="stat-card">
+                    <span>Total Nilai</span>
+                    <strong id="totalValue">0</strong>
+                </article>
+            </section>
+
+            <section class="filters">
+                <input
+                    id="search"
+                    placeholder="Cari karyawan atau pencapaian..."
+                    oninput="render()"
+                >
+                <select id="filterStatus" onchange="render()">
+                    <option value="all">Semua Status</option>
+                    <option value="verified">Terverifikasi</option>
+                    <option value="pending">Menunggu Verifikasi</option>
+                    <option value="revision">Perlu Perbaikan</option>
+                </select>
+                <button class="secondary" onclick="resetFilter()">
+                    Reset
+                </button>
+            </section>
+
+            <section class="panel">
+                <div class="panel-heading">
+                    <h3>Daftar Pencapaian Karyawan</h3>
+                    <span id="count">0 pencapaian</span>
+                </div>
+
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Karyawan</th>
+                                <th>Pencapaian</th>
+                                <th>Kategori</th>
+                                <th>Tanggal</th>
+                                <th>Nilai</th>
+                                <th>Status</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableBody"></tbody>
+                    </table>
+                </div>
+            </section>
+        </section>
+    </main>
+
+    <div class="modal" id="modal">
+        <form id="achievementForm" onsubmit="save(event)">
+            <h2 id="formTitle">Tambah Pencapaian</h2>
+
+            <label>Nama Karyawan</label>
+            <input id="employee" required>
+
+            <label>Judul Pencapaian</label>
+            <input id="title" required>
+
+            <label>Kategori</label>
+            <select id="category">
+                <option>Penjualan</option>
+                <option>Kerja Sama</option>
+                <option>Administrasi</option>
+                <option>Lainnya</option>
+            </select>
+
+            <label>Tanggal</label>
+            <input id="date" type="date" required>
+
+            <label>Nilai Pencapaian</label>
+            <input id="value" type="number" min="0" value="0">
+
+            <label>Satuan Nilai</label>
+            <input id="unit" placeholder="Contoh: pelanggan, dokumen">
+
+            <label>Status Verifikasi</label>
+            <select id="status">
+                <option value="pending">Menunggu Verifikasi</option>
+                <option value="verified">Terverifikasi</option>
+                <option value="revision">Perlu Perbaikan</option>
+            </select>
+
+            <label>Deskripsi Hasil</label>
+            <textarea id="description" required></textarea>
+
+            <label>Tautan Bukti (opsional)</label>
+            <input id="evidence" type="url" placeholder="https://...">
+
+            <div class="form-actions">
+                <button type="button" class="secondary" onclick="closeForm()">
+                    Batal
+                </button>
+                <button class="primary" type="submit">Simpan</button>
+            </div>
+        </form>
+    </div>
+
+    <script src="achievement.js"></script>
+</body>
+</html>

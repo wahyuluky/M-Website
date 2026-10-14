@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laporan Kinerja | Business Monitor</title>
+    <link rel="stylesheet" href="reports.css">
+
+    <!-- Basic Icons -->
+    <link href="https://cdn.boxicons.com/3.0.8/fonts/basic/boxicons.min.css" rel="stylesheet">
+    <!-- Filled Icons -->
+    <link href="https://cdn.boxicons.com/3.0.8/fonts/filled/boxicons-filled.min.css" rel="stylesheet">
+    <!-- Brand Icons -->
+    <link href="https://cdn.boxicons.com/3.0.8/fonts/brands/boxicons-brands.min.css" rel="stylesheet">
+  
+</head>
+<body>
+    <div class="app">
+        <aside class="sidebar">
+            <div class="brand">
+                <i class="bx bx-bar-chart-big brand-mark"></i>
+                <div class="brand-copy">
+                <div class="brand-name">Business Monitor</div>
+                <div class="brand-sub">Divisi Bisnis</div>
+                </div>
+            </div>
+
+            <div class="nav-label">Menu Utama</div>
+            <nav class="nav" aria-label="Navigasi utama"> 
+                <a  href="dashboard.html">
+                    <i class="bx bx-home-alt nav-icon"></i>
+                    <span class="nav-text">Dashboard</span>
+                </a>
+                <a href="employees.html">
+                    <i class="bx bx-user nav-icon"></i>
+                    <span class="nav-text">Data Karyawan</span>
+                </a>
+                <!-- Menu Produk dengan submenu -->
+
+                <div class="nav-group">
+                    <div class="nav-product-row">
+                        <a href="products.html" class="nav-product-link">
+                            <i class="bx bx-package nav-icon"></i>
+                            <span class="nav-text">Produk</span>
+                        </a>
+
+                        <button
+                            type="button"
+                            class="nav-toggle"
+                            id="produkToggle"
+                            aria-label="Buka submenu Produk"
+                            aria-expanded="false"
+                        >
+                            <i class="bx bx-chevron-down arrow-icon"></i>
+                        </button>
+                    </div>
+
+                    <div class="submenu" id="produkSubmenu">
+                        <a href="bank.html" class="submenu-link active" data-page="bank">
+                            <i class="bx bx-buildings"></i>
+                            <span>Data Bank</span>
+                        </a>
+
+                        <a href="product.html" class="submenu-link" data-page="produk">
+                            <i class="bx bx-box"></i>
+                            <span>Data Produk</span>
+                        </a>
+                    </div>
+                </div>
+                
+                <a href="targets.html">
+                    <i class="bx bx-bullseye nav-icon"></i>
+                    <span class="nav-text">Target</span>
+                </a>
+                <a href="commitments.html">
+                    <i class="bx bx-check-shield nav-icon"></i>
+                    <span class="nav-text">Komitmen</span>
+                </a>
+                <a href="daily-activities.html">
+                    <i class="bx bx-calendar-check nav-icon"></i>
+                    <span class="nav-text">Daily Activity</span>
+                </a>
+                <a href="achievements.html">
+                    <i class="bx bx-trophy nav-icon"></i>
+                    <span class="nav-text">Pencapaian</span>
+                </a>
+                <a class="active" href="reports.html">
+                    <i class="bx bx-file nav-icon"></i>
+                    <span class="nav-text">Laporan</span>
+                </a>
+            </nav>
+
+            <div class="sidebar-bottom">
+                <div class="profile">
+                <div class="avatar">M</div>
+                <div class="profile-copy">
+                    <div class="profile-name">Manajer Bisnis</div>
+                    <div class="profile-role">Administrator</div>
+                </div>
+                </div>
+                <a class="logout" href="#"><span>↪</span><span class="logout-text">Keluar</span></a>
+            </div>
+            </aside>
+
+        <main class="main-content">
+            <header class="topbar">
+                <div>
+                    <p class="breadcrumb">Business Monitor / Laporan</p>
+                    <h1>Laporan Kinerja</h1>
+                    <p class="subtitle">
+                        Pantau dan evaluasi kinerja karyawan Divisi Bisnis.
+                    </p>
+                </div>
+                <button class="btn btn-primary" id="printBtn">
+                    Cetak Laporan
+                </button>
+            </header>
+
+            <section class="filter-card">
+                <div class="filter-heading">
+                    <div>
+                        <h2>Filter Laporan</h2>
+                        <p>Pilih periode dan karyawan yang ingin ditampilkan.</p>
+                    </div>
+                </div>
+
+                <div class="filter-grid">
+                    <div class="form-group">
+                        <label for="startDate">Tanggal Mulai</label>
+                        <input type="date" id="startDate">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="endDate">Tanggal Selesai</label>
+                        <input type="date" id="endDate">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="employeeFilter">Karyawan</label>
+                        <select id="employeeFilter">
+                            <option value="">Semua Karyawan</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="searchInput">Cari Karyawan</label>
+                        <input type="search" id="searchInput"
+                               placeholder="Masukkan nama karyawan...">
+                    </div>
+
+                    <div class="filter-actions">
+                        <button class="btn btn-primary" id="applyFilter">
+                            Terapkan Filter
+                        </button>
+                        <button class="btn btn-secondary" id="resetFilter">
+                            Reset
+                        </button>
+                    </div>
+                </div>
+                <p id="filterMessage" class="filter-message" aria-live="polite"></p>
+            </section>
+
+            <section class="report-heading">
+                <div>
+                    <h2>Ringkasan Kinerja</h2>
+                    <p id="periodLabel">Periode laporan</p>
+                </div>
+                <span class="report-tag">Divisi Bisnis</span>
+            </section>
+
+            <section class="stats-grid">
+                <article class="stat-card">
+                    <div class="stat-top">
+                        <span class="stat-icon blue">K</span>
+                        <span class="stat-caption">Karyawan</span>
+                    </div>
+                    <h3 id="totalEmployees">0</h3>
+                    <p>Karyawan dalam laporan</p>
+                </article>
+
+                <article class="stat-card">
+                    <div class="stat-top">
+                        <span class="stat-icon green">T</span>
+                        <span class="stat-caption">Target</span>
+                    </div>
+                    <h3 id="averageTarget">0%</h3>
+                    <p>Rata-rata pencapaian target</p>
+                </article>
+
+                <article class="stat-card">
+                    <div class="stat-top">
+                        <span class="stat-icon purple">A</span>
+                        <span class="stat-caption">Aktivitas</span>
+                    </div>
+                    <h3 id="totalActivities">0</h3>
+                    <p>Aktivitas tercatat</p>
+                </article>
+
+                <article class="stat-card">
+                    <div class="stat-top">
+                        <span class="stat-icon orange">P</span>
+                        <span class="stat-caption">Pencapaian</span>
+                    </div>
+                    <h3 id="totalAchievements">0</h3>
+                    <p>Pencapaian terverifikasi</p>
+                </article>
+            </section>
+
+            <section class="report-card">
+                <div class="section-header">
+                    <div>
+                        <h2>Rekap Kinerja Karyawan</h2>
+                        <p>Ringkasan target, komitmen, aktivitas, dan pencapaian.</p>
+                    </div>
+                    <span class="result-count" id="resultCount">0 karyawan</span>
+                </div>
+
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Karyawan</th>
+                                <th>Target</th>
+                                <th>Komitmen</th>
+                                <th>Aktivitas</th>
+                                <th>Pencapaian</th>
+                                <th>Status Kinerja</th>
+                            </tr>
+                        </thead>
+                        <tbody id="reportTableBody"></tbody>
+                    </table>
+                </div>
+
+                <div class="empty-state" id="emptyState" hidden>
+                    <h3>Data tidak ditemukan</h3>
+                    <p>Coba ubah periode, pilihan karyawan, atau kata kunci pencarian.</p>
+                </div>
+
+                <div class="table-footer">
+                    <span id="tableSummary">Menampilkan 0 karyawan</span>
+                    <span>Data contoh untuk demonstrasi</span>
+                </div>
+            </section>
+
+            <section class="note-card">
+                <div class="note-icon">i</div>
+                <div>
+                    <h3>Catatan laporan</h3>
+                    <p>
+                        Persentase target dihitung dari target yang tercapai
+                        dibandingkan target yang ditetapkan. Status kinerja
+                        ditentukan berdasarkan persentase tersebut. Pastikan
+                        data contoh diganti dengan data aktual sebelum laporan
+                        digunakan untuk evaluasi resmi.
+                    </p>
+                </div>
+            </section>
+
+            <footer class="page-footer">
+                Business Monitor &copy; 2026 · Divisi Bisnis
+            </footer>
+        </main>
+    </div>
+
+    <script src="reports.js"></script>
+</body>
+</html>

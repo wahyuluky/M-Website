@@ -1,0 +1,200 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Bisnis</title>
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+
+     <!-- Basic Icons -->
+  <link href="https://cdn.boxicons.com/3.0.8/fonts/basic/boxicons.min.css" rel="stylesheet">
+  <!-- Filled Icons -->
+  <link href="https://cdn.boxicons.com/3.0.8/fonts/filled/boxicons-filled.min.css" rel="stylesheet">
+  <!-- Brand Icons -->
+  <link href="https://cdn.boxicons.com/3.0.8/fonts/brands/boxicons-brands.min.css" rel="stylesheet">
+  
+    <link rel="stylesheet" href="products.css">
+</head>
+<body>
+    <aside class="sidebar">
+        <div class="brand"><i class="bx bx-bar-chart-big brand-mark"></i><div class="brand-copy"><div class="brand-name">Business Monitor</div><div class="brand-sub">Divisi Bisnis</div></div></div>
+        <div class="nav-label">Menu Utama</div>
+        <nav class="nav" aria-label="Navigasi utama">
+            <a href="dashboard.html">
+                <i class="bx bx-home-alt nav-icon"></i>
+                <span class="nav-text">Dashboard</span>
+            </a>
+            <a href="employees.html">
+                <i class="bx bx-user nav-icon"></i>
+                <span class="nav-text">Data Karyawan</span>
+            </a>
+            <!-- Menu Produk dengan submenu -->
+            <div class="nav-group">
+                <div class="nav-product-row active">
+                    <a href="products.html" class="nav-product-link">
+                        <i class="bx bx-package nav-icon"></i>
+                        <span class="nav-text">Produk</span>
+                    </a>
+
+                    <button
+                        type="button"
+                        class="nav-toggle"
+                        id="produkToggle"
+                        aria-label="Buka submenu Produk"
+                        aria-expanded="false"
+                    >
+                        <i class="bx bx-chevron-down arrow-icon"></i>
+                    </button>
+                </div>
+
+                <div class="submenu" id="produkSubmenu">
+                    <a href="bank.html" class="submenu-link active" data-page="bank">
+                        <i class="bx bx-buildings"></i>
+                        <span>Data Bank</span>
+                    </a>
+
+                    <a href="product.html" class="submenu-link" data-page="produk">
+                        <i class="bx bx-box"></i>
+                        <span>Data Produk</span>
+                    </a>
+                </div>
+            </div>
+            
+            <a href="targets.html">
+                <i class="bx bx-bullseye nav-icon"></i>
+                <span class="nav-text">Target</span>
+            </a>
+            <a href="commitments.html">
+                <i class="bx bx-check-shield nav-icon"></i>
+                <span class="nav-text">Komitmen</span>
+            </a>
+            <a href="daily-activities.html">
+                <i class="bx bx-calendar-check nav-icon"></i>
+                <span class="nav-text">Daily Activity</span>
+            </a>
+            <a href="achievements.html">
+                <i class="bx bx-trophy nav-icon"></i>
+                <span class="nav-text">Pencapaian</span>
+            </a>
+            <a href="reports.html">
+                <i class="bx bx-file nav-icon"></i>
+                <span class="nav-text">Laporan</span>
+            </a>
+        </nav>
+        <div class="sidebar-bottom">
+        <div class="profile"><div class="avatar">M</div><div class="profile-copy"><div class="profile-name">Manajer Bisnis</div><div class="profile-role">Administrator</div></div></div>
+        <a class="logout" href="#"><span>↪</span><span class="logout-text">Keluar</span></a>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <header class="page-header">
+            <div>
+                <p class="breadcrumb">Business Monitor / Dashboard</p>
+                <h1>Dashboard Bisnis</h1>
+                <p class="subtitle">
+                    Ringkasan data bank dan produk bisnis.
+                </p>
+            </div>
+
+            <div class="period-badge">
+                <i class="bx bx-calendar"></i>
+                Data tahunan · Contoh
+            </div>
+        </header>
+
+        <section class="notice">
+            <i class="bx bx-info-circle"></i>
+            <p>
+                <strong>Mode demonstrasi:</strong>
+                angka pada dashboard adalah data simulasi, bukan hasil
+                perhitungan lengkap dari PDF sumber.
+            </p>
+        </section>
+
+        <section class="summary-grid">
+            <article class="summary-card">
+                <div class="summary-icon blue">
+                    <i class="bx bx-buildings"></i>
+                </div>
+                <p>Jumlah Bank</p>
+                <h2 id="totalBanks">0</h2>
+                <small>Bank dalam data contoh</small>
+            </article>
+
+            <article class="summary-card">
+                <div class="summary-icon purple">
+                    <i class="bx bx-package"></i>
+                </div>
+                <p>Jumlah Produk</p>
+                <h2 id="totalProducts">0</h2>
+                <small>Produk dalam data contoh</small>
+            </article>
+
+            <article class="summary-card">
+                <div class="summary-icon green">
+                    <i class="bx bx-wallet"></i>
+                </div>
+                <p>Total Volume</p>
+                <h2 id="totalVolume">-</h2>
+                <small>Nilai simulasi</small>
+            </article>
+
+            <article class="summary-card">
+                <div class="summary-icon orange">
+                    <i class="bx bx-trending-up"></i>
+                </div>
+                <p>Total IJP</p>
+                <h2 id="totalIjp">-</h2>
+                <small>Nilai simulasi</small>
+            </article>
+        </section>
+
+        <section class="chart-section">
+            <div class="section-heading">
+                <div>
+                    <h2>Distribusi Data per Bank</h2>
+                    <p>Bandingkan nilai setiap bank.</p>
+                </div>
+
+                <select id="bankMetric" class="metric-select"
+                        aria-label="Metrik grafik bank">
+                    <option value="vol">Volume (Vol)</option>
+                    <option value="ijp">IJP</option>
+                </select>
+            </div>
+
+            <div class="chart-container bank-chart">
+                <canvas id="bankChart"></canvas>
+            </div>
+        </section>
+
+        <section class="chart-section">
+            <div class="section-heading">
+                <div>
+                    <h2>Distribusi Data per Produk</h2>
+                    <p>Bandingkan nilai setiap produk.</p>
+                </div>
+
+                <select id="productMetric" class="metric-select"
+                        aria-label="Metrik grafik produk">
+                    <option value="vol">Volume (Vol)</option>
+                    <option value="ijp">IJP</option>
+                </select>
+            </div>
+
+            <div class="chart-container product-chart">
+                <canvas id="productChart"></canvas>
+            </div>
+        </section>
+
+        <footer class="footer">
+            Business Monitor · Dashboard Divisi Bisnis
+        </footer>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="products.js"></script>
+</body>
+</html>

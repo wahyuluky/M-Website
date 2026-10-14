@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Data Karyawan | Business Monitor</title>
+
+  <!-- Basic Icons -->
+  <link href="https://cdn.boxicons.com/3.0.8/fonts/basic/boxicons.min.css" rel="stylesheet">
+  <!-- Filled Icons -->
+  <link href="https://cdn.boxicons.com/3.0.8/fonts/filled/boxicons-filled.min.css" rel="stylesheet">
+  <!-- Brand Icons -->
+  <link href="https://cdn.boxicons.com/3.0.8/fonts/brands/boxicons-brands.min.css" rel="stylesheet">
+  
+  <style>
+    :root {
+      --navy: #172b4d;
+      --blue: #4f46e5;
+      --bg: #f5f7fb;
+      --surface: #fff;
+      --text: #172b4d;
+      --muted: #718096;
+      --border: #e5eaf2;
+      --green: #059669;
+      --green-soft: #ddf8ed;
+      --orange: #b45309;
+      --orange-soft: #fff0d9;
+      --red: #dc2626;
+      --shadow: 0 4px 18px rgba(23,43,77,.04);
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: var(--bg); color: var(--text); font-size: 14px; }
+    button, input, select { font: inherit; }
+    a { color: inherit; text-decoration: none; }
+    
+    .sidebar { 
+      width: 250px; 
+      background: #111827; 
+      color: #fff; 
+      position: fixed; 
+      inset: 0 auto 0 0; 
+      display: flex; 
+      flex-direction: column; 
+      padding: 22px 14px 16px; 
+      z-index: 10; 
+    }
+    .brand { display: flex; align-items: center; gap: 11px; padding: 0 8px 24px; border-bottom: 1px solid rgba(255,255,255,.12); margin-bottom: 22px; }
+    .brand-mark { width: 42px; height: 42px; border-radius: 12px; display: grid; place-items: center; background: linear-gradient(145deg,#60a5fa,#2563eb); color: white; font-size: 22px; font-weight: 800; }
+    .brand-name { font-size: 16px; font-weight: 750; letter-spacing: -.3px; }
+    .brand-sub { color: #aebdd5; font-size: 11px; margin-top: 4px; }
+    .nav-label { color: #91a4c1; text-transform: uppercase; letter-spacing: 1.2px; font-size: 10px; font-weight: 700; padding: 0 12px 10px; }
+    
+    /* Navigasi utama */
+.nav {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.nav > a,
+.nav-product-link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    min-height: 42px;
+    padding: 12px 13px;
+    border-radius: 9px;
+    color: #d3deef;
+    font-size: 13px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: background 0.18s ease, color 0.18s ease;
+}
+
+.nav > a:hover,
+.nav-product-link:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: white;
+}
+
+.nav > a.active,
+.nav-product-link.active {
+    background: var(--blue);
+    color: white;
+    box-shadow: 0 5px 14px rgba(37, 99, 235, 0.24);
+}
+
+/* Ikon dan teks sejajar */
+.nav-icon {
+    width: 22px;
+    min-width: 22px;
+    text-align: center;
+    font-size: 20px;
+    height: 22px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Baris menu Produk */
+.nav-product-row {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    min-height: 42px;
+    border-radius: 9px;
+}
+
+.nav-product-row:hover {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.nav-product-link {
+    flex: 1;
+    min-width: 0;
+}
+
+.nav-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 36px;
+    height: 42px;
+    padding: 0;
+    border: none;
+    border-radius: 8px;
+    background: transparent;
+    color: #d3deef;
+    cursor: pointer;
+}
+
+.nav-toggle:hover {
+    color: white;
+}
+
+.arrow-icon {
+    font-size: 18px;
+    transition: transform 0.3s ease;
+}
+
+.nav-group.open .arrow-icon {
+    transform: rotate(180deg);
+}
+
+/* Submenu */
+.submenu {
+    display: none;
+    padding: 5px 0 5px 20px;
+}
+
+.nav-group.open .submenu {
+    display: block;
+}
+
+.submenu-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 38px;
+    margin-top: 4px;
+    padding: 10px 12px;
+    border-radius: 8px;
+    color: #c4d1e5;
+    text-decoration: none;
+    font-size: 12px;
+}
+
+.submenu-link:hover,
+.submenu-link.active {
+    background: rgba(255, 255, 255, 0.12);
+    color: white;
+}
+
+.submenu-link i {
+    width: 18px;
+    min-width: 18px;
+    text-align: center;
+    font-size: 16px;
+}
+
+    
+
+    .sidebar-bottom { margin-top: auto; border-top: 1px solid rgba(255,255,255,.12); padding-top: 17px; }
+    .profile { display: flex; align-items: center; gap: 10px; padding: 4px 7px 16px; }
+    .avatar {
+      display: grid; place-items: center; flex-shrink: 0;
+      width: 37px; height: 37px; border-radius: 50%;
+      background: #e5edfb; color: #31517f; font-weight: 750;
+    }
+    .profile-name { font-weight: 650; font-size: 14px; }
+    .profile-role { color: #aebdd5; font-size: 12px; margin-top: 4px; }
+    .logout { display: flex; align-items: center; gap: 10px; color: #c4d1e5; padding: 10px 8px; font-size: 14px; }
+
+    .main { margin-left: 238px; min-height: 100vh; }
+    .topbar { height: 70px; background: var(--surface); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 0 30px; position: sticky; top: 0; z-index: 5; }
+    .top-left, .top-right { display: flex; align-items: center; gap: 16px; }
+    .menu-button { border: 0; background: #f1f5fb; color: var(--navy); width: 36px; height: 36px; border-radius: 9px; cursor: pointer; font-size: 18px; }
+    .search { width: min(340px,30vw); height: 38px; border: 1px solid var(--border); border-radius: 9px; display: flex; align-items: center; gap: 9px; padding: 0 12px; background: #f9fbfe; color: #8190a7; }
+    .search input { border: 0; outline: 0; background: transparent; width: 100%; color: var(--text); font-size: 12px; }
+    .date-pill { background: #f3f6fb; padding: 10px 13px; border-radius: 8px; font-size: 12px; color: #526582; white-space: nowrap; }
+    .manager { display: flex; align-items: center; gap: 9px; font-size: 12px; font-weight: 650; }
+    .manager .avatar { width: 34px; height: 34px; }
+    .content { padding: 27px 30px 34px; max-width: 1600px; margin: 0 auto; }
+    .breadcrumbs { color: #8190a7; font-size: 11px; margin-bottom: 8px; }
+    .page-heading { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; margin-bottom: 22px; }
+    h1 { font-size: 25px; line-height: 1.2; margin: 0; letter-spacing: -.7px; }
+    .subtitle { margin: 8px 0 0; color: var(--muted); font-size: 13px; }
+    .primary-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; border: 0; border-radius: 8px; background: var(--blue); color: white; padding: 11px 15px; font-size: 12px; font-weight: 650; cursor: pointer; box-shadow: 0 4px 10px rgba(37,99,235,.16); }
+    .primary-btn:hover { background: #1d4ed8; }
+    .stats { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 15px; margin-bottom: 22px; }
+    .stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 17px 18px; display: flex; align-items: center; gap: 13px; box-shadow: var(--shadow); min-width: 0; }
+    .stat-icon { width: 42px; height: 42px; display: grid; place-items: center; border-radius: 11px; font-size: 19px; flex-shrink: 0; }
+    .icon-blue { background: #eff6ff; color: var(--blue); } .icon-green { background: var(--green-soft); color: var(--green); } .icon-orange { background: var(--orange-soft); color: var(--orange); }
+    .stat-label { color: #667792; font-size: 12px; margin-bottom: 7px; }
+    .stat-value { font-size: 25px; line-height: 1; font-weight: 750; letter-spacing: -.8px; }
+    .stat-note { color: #8391a6; font-size: 10px; margin-top: 7px; }
+    .panel { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; box-shadow: var(--shadow); min-width: 0; }
+    .filters { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; padding: 17px 18px; border-bottom: 1px solid #edf0f5; }
+    .filter-search { display: flex; align-items: center; gap: 8px; border: 1px solid var(--border); border-radius: 8px; padding: 0 11px; height: 37px; min-width: 230px; flex: 1; max-width: 360px; color: #8290a5; }
+    .filter-search input { border: 0; outline: 0; width: 100%; font-size: 12px; color: var(--text); }
+    .select { border: 1px solid var(--border); border-radius: 8px; padding: 9px 11px; color: #5e6f88; background: white; font-size: 11px; outline: 0; min-width: 135px; }
+    .filter-count { margin-left: auto; color: #8391a6; font-size: 11px; white-space: nowrap; }
+    .table-wrap { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; white-space: nowrap; }
+    th { background: #f8fafd; color: #718096; text-align: left; font-size: 10px; font-weight: 700; padding: 14px 17px; }
+    td { border-top: 1px solid #edf1f6; padding: 14px 17px; font-size: 11px; color: #405471; }
+    tbody tr:hover { background: #fbfdff; }
+    .employee-cell { display: flex; align-items: center; gap: 10px; min-width: 190px; }
+    .employee-cell .avatar { width: 36px; height: 36px; font-size: 10px; }
+    .employee-name { color: var(--text); font-weight: 700; font-size: 11px; }
+    .employee-email { color: #8b98ab; font-size: 10px; margin-top: 4px; }
+    .status { display: inline-flex; align-items: center; gap: 6px; padding: 5px 9px; border-radius: 20px; font-size: 10px; font-weight: 650; }
+    .status::before { content: ""; width: 5px; height: 5px; border-radius: 50%; background: currentColor; }
+    .active-status { color: #047857; background: #ddf8ed; }
+    .inactive-status { color: #b45309; background: #fff0d9; }
+    .action-group { display: flex; gap: 5px; }
+    .action-btn { border: 1px solid var(--border); background: white; color: #60738f; border-radius: 6px; padding: 6px 8px; cursor: pointer; font-size: 11px; }
+    .action-btn:hover { color: var(--blue); border-color: #b8ccf8; }
+    .action-btn.delete:hover { color: var(--red); border-color: #fecaca; }
+    .panel-footer { padding: 14px 18px; display: flex; align-items: center; justify-content: space-between; gap: 12px; border-top: 1px solid #edf1f6; color: #8996a9; font-size: 10px; }
+    .pagination { display: flex; gap: 5px; }
+    .page-btn { border: 1px solid var(--border); background: white; color: #60738f; border-radius: 6px; width: 28px; height: 28px; font-size: 10px; cursor: pointer; }
+    .page-btn.active { background: var(--blue); color: white; border-color: var(--blue); }
+    .modal-backdrop { display: none; position: fixed; inset: 0; z-index: 30; background: rgba(17,31,53,.45); padding: 20px; align-items: center; justify-content: center; }
+    .modal-backdrop.open { display: flex; }
+    .modal { width: min(600px,100%); max-height: 92vh; overflow: auto; background: white; border-radius: 14px; box-shadow: 0 20px 60px rgba(0,0,0,.18); }
+    .modal-header { display: flex; justify-content: space-between; align-items: center; padding: 20px 22px; border-bottom: 1px solid var(--border); }
+    .modal-header h2 { margin: 0; font-size: 17px; }
+    .close-btn { border: 0; background: #f1f5fb; color: #526582; width: 31px; height: 31px; border-radius: 7px; cursor: pointer; font-size: 18px; }
+    .modal-body { padding: 20px 22px; }
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+    .field { display: grid; gap: 7px; }
+    .field.full { grid-column: 1 / -1; }
+    .field label { font-size: 11px; color: #526582; font-weight: 650; }
+    .field input, .field select { width: 100%; border: 1px solid var(--border); border-radius: 8px; padding: 11px 12px; outline: 0; font-size: 12px; color: var(--text); background: white; }
+    .field input:focus, .field select:focus { border-color: #8db1ff; box-shadow: 0 0 0 3px #eff6ff; }
+    .form-help { color: #8b98ab; font-size: 10px; margin-top: 2px; }
+    .modal-footer { display: flex; justify-content: flex-end; gap: 9px; padding: 16px 22px; border-top: 1px solid var(--border); }
+    .secondary-btn { border: 1px solid var(--border); background: white; color: #526582; border-radius: 8px; padding: 10px 14px; font-size: 12px; cursor: pointer; }
+    .toast { display: none; position: fixed; right: 24px; bottom: 24px; z-index: 50; padding: 13px 17px; background: #102d4c; color: white; border-radius: 9px; box-shadow: 0 8px 30px rgba(0,0,0,.18); font-size: 12px; }
+    .toast.show { display: block; }
+    @media (max-width: 1100px) { .stats { grid-template-columns: repeat(3,minmax(0,1fr)); } }
+    @media (max-width: 850px) {
+      .sidebar { width: 72px; padding: 18px 9px; }
+      .brand { justify-content: center; padding: 0 0 20px; }
+      .brand-copy, .nav-label, .nav-text, .profile-copy, .logout-text { display: none; }
+      .nav a { justify-content: center; padding: 12px 8px; }
+      .profile { justify-content: center; padding-inline: 0; }
+      .logout { justify-content: center; }
+      .main { margin-left: 72px; }
+      .topbar { padding: 0 18px; }
+      .date-pill { display: none; }
+      .content { padding: 22px 18px; }
+      .stats { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 560px) {
+      .topbar { height: 60px; padding: 0 12px; }
+      .top-left, .top-right { gap: 8px; }
+      .search { width: 40vw; }
+      .manager-label { display: none; }
+      .content { padding: 18px 12px; }
+      .page-heading { flex-direction: column; }
+      h1 { font-size: 22px; }
+      .stats { gap: 9px; }
+      .stat-card { padding: 12px; gap: 9px; }
+      .stat-icon { width: 34px; height: 34px; font-size: 16px; }
+      .stat-value { font-size: 22px; }
+      .filter-search { min-width: 100%; max-width: none; }
+      .filter-count { margin-left: 0; width: 100%; }
+      .form-grid { grid-template-columns: 1fr; }
+      .field.full { grid-column: auto; }
+      .panel-footer { align-items: flex-start; flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="brand"><i class="bx bx-bar-chart-big brand-mark"></i><div class="brand-copy"><div class="brand-name">Business Monitor</div><div class="brand-sub">Divisi Bisnis</div></div></div>
+    <div class="nav-label">Menu Utama</div>
+    <nav class="nav" aria-label="Navigasi utama">
+      <a href="dashboard.html">
+            <i class="bx bx-home-alt nav-icon"></i>
+            <span class="nav-text">Dashboard</span>
+        </a>
+        <a class="active" href="employees.html">
+            <i class="bx bx-user nav-icon"></i>
+            <span class="nav-text">Data Karyawan</span>
+        </a>
+        <!-- Menu Produk dengan submenu -->
+        <div class="nav-group">
+            <div class="nav-product-row">
+                <a href="products.html" class="nav-product-link">
+                    <i class="bx bx-package nav-icon"></i>
+                    <span class="nav-text">Produk</span>
+                </a>
+
+                <button
+                    type="button"
+                    class="nav-toggle"
+                    id="produkToggle"
+                    aria-label="Buka submenu Produk"
+                    aria-expanded="false"
+                >
+                    <i class="bx bx-chevron-down arrow-icon"></i>
+                </button>
+            </div>
+
+            <div class="submenu" id="produkSubmenu">
+                <a href="bank.html" class="submenu-link active" data-page="bank">
+                    <i class="bx bx-buildings"></i>
+                    <span>Data Bank</span>
+                </a>
+
+                <a href="product.html" class="submenu-link" data-page="produk">
+                    <i class="bx bx-box"></i>
+                    <span>Data Produk</span>
+                </a>
+            </div>
+        </div>
+
+        <a href="targets.html">
+            <i class="bx bx-bullseye nav-icon"></i>
+            <span class="nav-text">Target</span>
+        </a>
+        <a href="commitments.html">
+            <i class="bx bx-check-shield nav-icon"></i>
+            <span class="nav-text">Komitmen</span>
+        </a>
+        <a href="daily-activities.html">
+            <i class="bx bx-calendar-check nav-icon"></i>
+            <span class="nav-text">Daily Activity</span>
+        </a>
+        <a href="achievements.html">
+            <i class="bx bx-trophy nav-icon"></i>
+            <span class="nav-text">Pencapaian</span>
+        </a>
+        <a href="reports.html">
+            <i class="bx bx-file nav-icon"></i>
+            <span class="nav-text">Laporan</span>
+        </a>
+    </nav>
+    <div class="sidebar-bottom">
+      <div class="profile"><div class="avatar">M</div><div class="profile-copy"><div class="profile-name">Manajer Bisnis</div><div class="profile-role">Administrator</div></div></div>
+      <a class="logout" href="#"><span>↪</span><span class="logout-text">Keluar</span></a>
+    </div>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <div class="top-left"><button class="menu-button" aria-label="Menu">☰</button><label class="search"><span>⌕</span><input type="search" id="globalSearch" placeholder="Cari karyawan..." aria-label="Cari karyawan"></label></div>
+      <div class="top-right"><div class="date-pill">▦ &nbsp; Senin, 12 Oktober 2026</div><span title="Notifikasi">♧</span><div class="manager"><div class="avatar">M</div><span class="manager-label">Manajer</span><span style="color:#8190a7">⌄</span></div></div>
+    </header>
+
+    <section class="content">
+      <div class="page-heading">
+        <div><div class="breadcrumbs">Dashboard / Data Karyawan</div><h1>Data Karyawan</h1><p class="subtitle">Kelola data karyawan yang tergabung dalam Divisi Bisnis.</p></div>
+        <button class="primary-btn" id="addEmployeeBtn">＋ Tambah Karyawan</button>
+      </div>
+
+      <section class="stats">
+        <article class="stat-card"><div class="stat-icon icon-blue">♙</div><div><div class="stat-label">Total Karyawan</div><div class="stat-value" id="totalCount">8</div><div class="stat-note">Terdaftar di Divisi Bisnis</div></div></article>
+        <article class="stat-card"><div class="stat-icon icon-green">✓</div><div><div class="stat-label">Karyawan Aktif</div><div class="stat-value" id="activeCount">7</div><div class="stat-note">Sedang bekerja</div></div></article>
+        <article class="stat-card"><div class="stat-icon icon-orange">Ⅱ</div><div><div class="stat-label">Karyawan Nonaktif</div><div class="stat-value" id="inactiveCount">1</div><div class="stat-note">Tidak aktif saat ini</div></div></article>
+      </section>
+
+      <section class="panel">
+        <div class="filters">
+          <label class="filter-search"><span>⌕</span><input type="search" id="employeeSearch" placeholder="Cari nama, ID, atau email..."></label>
+          <select class="select" id="statusFilter" aria-label="Filter status"><option value="">Semua Status</option><option value="Aktif">Aktif</option><option value="Nonaktif">Nonaktif</option></select>
+          <select class="select" id="positionFilter" aria-label="Filter jabatan"><option value="">Semua Jabatan</option><option>Business Development</option><option>Sales Executive</option><option>Account Executive</option><option>Business Support</option></select>
+          <span class="filter-count" id="resultCount">8 karyawan</span>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>KARYAWAN</th><th>ID KARYAWAN</th><th>JABATAN</th><th>TANGGAL BERGABUNG</th><th>STATUS</th><th>AKSI</th></tr></thead>
+            <tbody id="employeeTable">
+              <tr data-id="BM001" data-name="Andi Pratama" data-email="andi.pratama@contoh.co.id" data-position="Sales Executive" data-join="2025-01-15" data-status="Aktif"><td><div class="employee-cell"><div class="avatar">AP</div><div><div class="employee-name">Andi Pratama</div><div class="employee-email">andi.pratama@contoh.co.id</div></div></div></td><td>BM001</td><td>Sales Executive</td><td>15 Jan 2025</td><td><span class="status active-status">Aktif</span></td><td><div class="action-group"><button class="action-btn view-btn" title="Lihat detail">Detail</button><button class="action-btn edit-btn" title="Edit karyawan">Edit</button><button class="action-btn delete delete-btn" title="Hapus karyawan">Hapus</button></div></td></tr>
+              <tr data-id="BM002" data-name="Siti Rahma" data-email="siti.rahma@contoh.co.id" data-position="Business Development" data-join="2025-02-03" data-status="Aktif"><td><div class="employee-cell"><div class="avatar">SR</div><div><div class="employee-name">Siti Rahma</div><div class="employee-email">siti.rahma@contoh.co.id</div></div></div></td><td>BM002</td><td>Business Development</td><td>03 Feb 2025</td><td><span class="status active-status">Aktif</span></td><td><div class="action-group"><button class="action-btn view-btn">Detail</button><button class="action-btn edit-btn">Edit</button><button class="action-btn delete delete-btn">Hapus</button></div></td></tr>
+              <tr data-id="BM003" data-name="Budi Santoso" data-email="budi.santoso@contoh.co.id" data-position="Account Executive" data-join="2025-03-10" data-status="Aktif"><td><div class="employee-cell"><div class="avatar">BS</div><div><div class="employee-name">Budi Santoso</div><div class="employee-email">budi.santoso@contoh.co.id</div></div></div></td><td>BM003</td><td>Account Executive</td><td>10 Mar 2025</td><td><span class="status active-status">Aktif</span></td><td><div class="action-group"><button class="action-btn view-btn">Detail</button><button class="action-btn edit-btn">Edit</button><button class="action-btn delete delete-btn">Hapus</button></div></td></tr>
+              <tr data-id="BM004" data-name="Rina Agustina" data-email="rina.agustina@contoh.co.id" data-position="Sales Executive" data-join="2025-04-21" data-status="Aktif"><td><div class="employee-cell"><div class="avatar">RA</div><div><div class="employee-name">Rina Agustina</div><div class="employee-email">rina.agustina@contoh.co.id</div></div></div></td><td>BM004</td><td>Sales Executive</td><td>21 Apr 2025</td><td><span class="status active-status">Aktif</span></td><td><div class="action-group"><button class="action-btn view-btn">Detail</button><button class="action-btn edit-btn">Edit</button><button class="action-btn delete delete-btn">Hapus</button></div></td></tr>
+              <tr data-id="BM005" data-name="Doni Setiawan" data-email="doni.setiawan@contoh.co.id" data-position="Business Support" data-join="2025-06-02" data-status="Aktif"><td><div class="employee-cell"><div class="avatar">DS</div><div><div class="employee-name">Doni Setiawan</div><div class="employee-email">doni.setiawan@contoh.co.id</div></div></div></td><td>BM005</td><td>Business Support</td><td>02 Jun 2025</td><td><span class="status active-status">Aktif</span></td><td><div class="action-group"><button class="action-btn view-btn">Detail</button><button class="action-btn edit-btn">Edit</button><button class="action-btn delete delete-btn">Hapus</button></div></td></tr>
+              <tr data-id="BM006" data-name="Nadia Putri" data-email="nadia.putri@contoh.co.id" data-position="Business Development" data-join="2025-07-14" data-status="Aktif"><td><div class="employee-cell"><div class="avatar">NP</div><div><div class="employee-name">Nadia Putri</div><div class="employee-email">nadia.putri@contoh.co.id</div></div></div></td><td>BM006</td><td>Business Development</td><td>14 Jul 2025</td><td><span class="status active-status">Aktif</span></td><td><div class="action-group"><button class="action-btn view-btn">Detail</button><button class="action-btn edit-btn">Edit</button><button class="action-btn delete delete-btn">Hapus</button></div></td></tr>
+              <tr data-id="BM007" data-name="Fajar Ramadhan" data-email="fajar.ramadhan@contoh.co.id" data-position="Account Executive" data-join="2025-08-01" data-status="Aktif"><td><div class="employee-cell"><div class="avatar">FR</div><div><div class="employee-name">Fajar Ramadhan</div><div class="employee-email">fajar.ramadhan@contoh.co.id</div></div></div></td><td>BM007</td><td>Account Executive</td><td>01 Agu 2025</td><td><span class="status active-status">Aktif</span></td><td><div class="action-group"><button class="action-btn view-btn">Detail</button><button class="action-btn edit-btn">Edit</button><button class="action-btn delete delete-btn">Hapus</button></div></td></tr>
+              <tr data-id="BM008" data-name="Dewi Lestari" data-email="dewi.lestari@contoh.co.id" data-position="Business Support" data-join="2025-09-15" data-status="Nonaktif"><td><div class="employee-cell"><div class="avatar">DL</div><div><div class="employee-name">Dewi Lestari</div><div class="employee-email">dewi.lestari@contoh.co.id</div></div></div></td><td>BM008</td><td>Business Support</td><td>15 Sep 2025</td><td><span class="status inactive-status">Nonaktif</span></td><td><div class="action-group"><button class="action-btn view-btn">Detail</button><button class="action-btn edit-btn">Edit</button><button class="action-btn delete delete-btn">Hapus</button></div></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="panel-footer"><span id="tableSummary">Menampilkan 8 dari 8 karyawan · Data contoh</span><div class="pagination"><button class="page-btn active">1</button><button class="page-btn">2</button><button class="page-btn">3</button><button class="page-btn">→</button></div></div>
+      </section>
+    </section>
+  </main>
+
+  <div class="modal-backdrop" id="employeeModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <form class="modal" id="employeeForm">
+      <div class="modal-header"><h2 id="modalTitle">Tambah Karyawan</h2><button class="close-btn" type="button" id="closeModal" aria-label="Tutup">×</button></div>
+      <div class="modal-body">
+        <div class="form-grid">
+          <div class="field"><label for="employeeId">ID Karyawan *</label><input id="employeeId" name="id" required placeholder="Contoh: BM009"><span class="form-help">Gunakan ID yang unik.</span></div>
+          <div class="field"><label for="employeeName">Nama Lengkap *</label><input id="employeeName" name="name" required placeholder="Nama karyawan"></div>
+          <div class="field"><label for="employeeEmail">Email *</label><input id="employeeEmail" name="email" type="email" required placeholder="nama@perusahaan.co.id"></div>
+          <div class="field"><label for="employeePosition">Jabatan *</label><select id="employeePosition" name="position" required><option value="">Pilih jabatan</option><option>Business Development</option><option>Sales Executive</option><option>Account Executive</option><option>Business Support</option></select></div>
+          <div class="field"><label for="employeeJoin">Tanggal Bergabung *</label><input id="employeeJoin" name="join" type="date" required></div>
+          <div class="field"><label for="employeeStatus">Status *</label><select id="employeeStatus" name="status" required><option>Aktif</option><option>Nonaktif</option></select></div>
+        </div>
+      </div>
+      <div class="modal-footer"><button class="secondary-btn" type="button" id="cancelModal">Batal</button><button class="primary-btn" type="submit">Simpan Karyawan</button></div>
+    </form>
+  </div>
+  <div class="toast" id="toast" role="status"></div>
+
+  <script>
+    const produkToggle = document.getElementById("produkToggle");
+    const produkGroup = produkToggle.closest(".nav-group");
+    const submenuLinks = document.querySelectorAll(".submenu-link");
+
+    // Buka atau tutup submenu Produk
+    produkToggle.addEventListener("click", () => {
+        produkGroup.classList.toggle("open");
+    });
+
+
+    const table = document.getElementById('employeeTable');
+    const modal = document.getElementById('employeeModal');
+    const form = document.getElementById('employeeForm');
+    const toast = document.getElementById('toast');
+    let editingRow = null;
+
+    function initials(name) {
+      return name.trim().split(/\s+/).slice(0, 2).map(part => part[0]).join('').toUpperCase();
+    }
+    function formatDate(dateString) {
+      if (!dateString) return '-';
+      return new Date(dateString + 'T00:00:00').toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' });
+    }
+    function showToast(message) {
+      toast.textContent = message;
+      toast.classList.add('show');
+      window.setTimeout(() => toast.classList.remove('show'), 2600);
+    }
+    function updateCounts() {
+      const rows = [...table.querySelectorAll('tr')];
+      document.getElementById('totalCount').textContent = rows.length;
+      document.getElementById('activeCount').textContent = rows.filter(row => row.dataset.status === 'Aktif').length;
+      document.getElementById('inactiveCount').textContent = rows.filter(row => row.dataset.status === 'Nonaktif').length;
+    }
+    function filterRows() {
+      const q = (document.getElementById('employeeSearch').value || document.getElementById('globalSearch').value).toLowerCase().trim();
+      const status = document.getElementById('statusFilter').value;
+      const position = document.getElementById('positionFilter').value;
+      let visible = 0;
+      [...table.querySelectorAll('tr')].forEach(row => {
+        const matchText = [row.dataset.id, row.dataset.name, row.dataset.email, row.dataset.position].join(' ').toLowerCase().includes(q);
+        const matchStatus = !status || row.dataset.status === status;
+        const matchPosition = !position || row.dataset.position === position;
+        const show = matchText && matchStatus && matchPosition;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      document.getElementById('resultCount').textContent = `${visible} karyawan`;
+      document.getElementById('tableSummary').textContent = `Menampilkan ${visible} dari ${table.querySelectorAll('tr').length} karyawan · Data contoh`;
+    }
+    function openModal(row = null, mode = 'edit') {
+      editingRow = row;
+      form.reset();
+      if (mode === 'view' && row) {
+        document.getElementById('modalTitle').textContent = 'Detail Karyawan';
+        form.querySelectorAll('input, select').forEach(el => el.disabled = true);
+        document.querySelector('#employeeForm button[type="submit"]').style.display = 'none';
+        document.getElementById('employeeId').value = row.dataset.id;
+        document.getElementById('employeeName').value = row.dataset.name;
+        document.getElementById('employeeEmail').value = row.dataset.email;
+        document.getElementById('employeePosition').value = row.dataset.position;
+        document.getElementById('employeeJoin').value = row.dataset.join;
+        document.getElementById('employeeStatus').value = row.dataset.status;
+      } else {
+        form.querySelectorAll('input, select').forEach(el => el.disabled = false);
+        document.querySelector('#employeeForm button[type="submit"]').style.display = '';
+        document.getElementById('modalTitle').textContent = row ? 'Edit Karyawan' : 'Tambah Karyawan';
+        if (row) {
+          document.getElementById('employeeId').value = row.dataset.id;
+          document.getElementById('employeeId').readOnly = true;
+          document.getElementById('employeeName').value = row.dataset.name;
+          document.getElementById('employeeEmail').value = row.dataset.email;
+          document.getElementById('employeePosition').value = row.dataset.position;
+          document.getElementById('employeeJoin').value = row.dataset.join;
+          document.getElementById('employeeStatus').value = row.dataset.status;
+        } else {
+          document.getElementById('employeeId').readOnly = false;
+          document.getElementById('employeeJoin').value = new Date().toISOString().slice(0, 10);
+        }
+      }
+      modal.classList.add('open');
+    }
+    function closeModal() {
+      modal.classList.remove('open');
+      form.querySelectorAll('input, select').forEach(el => { el.disabled = false; el.readOnly = false; });
+      document.querySelector('#employeeForm button[type="submit"]').style.display = '';
+      editingRow = null;
+    }
+    function createRow(data) {
+      const row = document.createElement('tr');
+      row.dataset.id = data.id;
+      row.dataset.name = data.name;
+      row.dataset.email = data.email;
+      row.dataset.position = data.position;
+      row.dataset.join = data.join;
+      row.dataset.status = data.status;
+      row.innerHTML = `
+        <td><div class="employee-cell"><div class="avatar">${initials(data.name)}</div><div><div class="employee-name"></div><div class="employee-email"></div></div></div></td>
+        <td></td><td></td><td></td>
+        <td><span class="status"></span></td>
+        <td><div class="action-group"><button class="action-btn view-btn">Detail</button><button class="action-btn edit-btn">Edit</button><button class="action-btn delete delete-btn">Hapus</button></div></td>`;
+      row.querySelector('.employee-name').textContent = data.name;
+      row.querySelector('.employee-email').textContent = data.email;
+      row.children[1].textContent = data.id;
+      row.children[2].textContent = data.position;
+      row.children[3].textContent = formatDate(data.join);
+      const badge = row.querySelector('.status');
+      badge.textContent = data.status;
+      badge.classList.add(data.status === 'Aktif' ? 'active-status' : 'inactive-status');
+      return row;
+    }
+    document.getElementById('addEmployeeBtn').addEventListener('click', () => openModal());
+    document.getElementById('closeModal').addEventListener('click', closeModal);
+    document.getElementById('cancelModal').addEventListener('click', closeModal);
+    modal.addEventListener('click', event => { if (event.target === modal) closeModal(); });
+    document.getElementById('employeeSearch').addEventListener('input', () => {
+      document.getElementById('globalSearch').value = '';
+      filterRows();
+    });
+    document.getElementById('globalSearch').addEventListener('input', () => {
+      document.getElementById('employeeSearch').value = '';
+      filterRows();
+    });
+    document.getElementById('statusFilter').addEventListener('change', filterRows);
+    document.getElementById('positionFilter').addEventListener('change', filterRows);
+    table.addEventListener('click', event => {
+      const button = event.target.closest('button');
+      if (!button) return;
+      const row = button.closest('tr');
+      if (button.classList.contains('view-btn')) openModal(row, 'view');
+      if (button.classList.contains('edit-btn')) openModal(row, 'edit');
+      if (button.classList.contains('delete-btn')) {
+        if (confirm(`Hapus data karyawan "${row.dataset.name}" dari tampilan ini?`)) {
+          row.remove();
+          updateCounts();
+          filterRows();
+          showToast('Data karyawan dihapus dari tampilan demo.');
+        }
+      }
+    });
+    form.addEventListener('submit', event => {
+      event.preventDefault();
+      const data = Object.fromEntries(new FormData(form).entries());
+      if (editingRow) {
+        editingRow.dataset.name = data.name;
+        editingRow.dataset.email = data.email;
+        editingRow.dataset.position = data.position;
+        editingRow.dataset.join = data.join;
+        editingRow.dataset.status = data.status;
+        const updated = createRow({ ...data, id: editingRow.dataset.id });
+        editingRow.replaceWith(updated);
+      } else {
+        const duplicate = [...table.querySelectorAll('tr')].some(row => row.dataset.id.toLowerCase() === data.id.toLowerCase());
+        if (duplicate) {
+          alert('ID karyawan sudah digunakan. Gunakan ID yang berbeda.');
+          document.getElementById('employeeId').focus();
+          return;
+        }
+        table.appendChild(createRow(data));
+      }
+      closeModal();
+      updateCounts();
+      filterRows();
+      showToast(editingRow ? 'Data karyawan diperbarui.' : 'Karyawan berhasil ditambahkan.');
+    });
+    updateCounts();
+  </script>
+</body>
+</html>

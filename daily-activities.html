@@ -1,0 +1,1757 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Daily Activity | Business Monitor</title>
+
+<!-- Basic Icons -->
+  <link href="https://cdn.boxicons.com/3.0.8/fonts/basic/boxicons.min.css" rel="stylesheet">
+  <!-- Filled Icons -->
+  <link href="https://cdn.boxicons.com/3.0.8/fonts/filled/boxicons-filled.min.css" rel="stylesheet">
+  <!-- Brand Icons -->
+  <link href="https://cdn.boxicons.com/3.0.8/fonts/brands/boxicons-brands.min.css" rel="stylesheet">
+  
+
+<style>
+:root {
+    --navy: #172b4d;
+    --navy-light: #223b62;
+    --blue: #4f46e5;
+    --blue-soft: #eff6ff;
+    --bg: #f5f7fb;
+    --white: #ffffff;
+    --text: #172033;
+    --muted: #718096;
+    --border: #e5eaf2;
+    --green: #15803d;
+    --green-soft: #dff7ed;
+    --green-bg: #dcfce7;
+    --yellow: #a16207;
+    --orange: #c77716;
+    --orange-soft: #fff0d9;
+    --purple: #7c3aed;
+    --purple-soft: #f0e8ff;
+    --yellow-bg: #fef3c7;
+    --gray-bg: #e2e8f0;
+    --red: #b91c1c;
+    --red-soft: #fee8e8;
+    --red-bg: #fee2e2;
+    --shadow: 0 4px 18px rgba(23, 43, 77, .04);
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 14px;
+}
+
+button, input, select, textarea {
+    font: inherit;
+}
+
+a { color: inherit; text-decoration: none; }
+
+button {
+    cursor: pointer;
+}
+
+/* Layout */
+
+.app {
+    display: flex;
+    min-height: 100vh;
+}
+
+.sidebar {
+    width: 250px;
+    background: #111827;
+    color: #fff;
+    position: fixed;
+    inset: 0 auto 0 0;
+    display: flex;
+    flex-direction: column;
+    padding: 22px 14px 16px;
+    z-index: 10;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    padding: 0 8px 24px;
+    border-bottom: 1px solid rgba(255,255,255,.12);
+    margin-bottom: 22px;
+}
+
+.brand-mark {
+      width: 38px; height: 38px; border-radius: 11px;
+      display: grid; place-items: center;
+      background: linear-gradient(145deg, #60a5fa, #2563eb);
+      color: white; font-size: 20px; font-weight: 800;
+    }
+    .brand-name { font-size: 16px; font-weight: 750; letter-spacing: -.3px; }
+    .brand-sub { color: #aebdd5; font-size: 11px; margin-top: 4px; }
+    .nav-label {
+      color: #91a4c1; text-transform: uppercase; letter-spacing: 1.2px;
+      font-size: 10px; font-weight: 700; padding: 0 12px 10px;
+    }
+    /* Navigasi utama */
+.nav {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.nav > a,
+.nav-product-link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    min-height: 42px;
+    padding: 12px 13px;
+    border-radius: 9px;
+    color: #d3deef;
+    font-size: 13px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: background 0.18s ease, color 0.18s ease;
+}
+
+.nav > a:hover,
+.nav-product-link:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: white;
+}
+
+.nav > a.active,
+.nav-product-link.active {
+    background: var(--blue);
+    color: white;
+    box-shadow: 0 5px 14px rgba(37, 99, 235, 0.24);
+}
+
+/* Ikon dan teks sejajar */
+.nav-icon {
+    width: 22px;
+    min-width: 22px;
+    text-align: center;
+    font-size: 20px;
+    height: 22px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Baris menu Produk */
+.nav-product-row {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    min-height: 42px;
+    border-radius: 9px;
+}
+
+.nav-product-row:hover {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.nav-product-link {
+    flex: 1;
+    min-width: 0;
+}
+
+.nav-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 36px;
+    height: 42px;
+    padding: 0;
+    border: none;
+    border-radius: 8px;
+    background: transparent;
+    color: #d3deef;
+    cursor: pointer;
+}
+
+.nav-toggle:hover {
+    color: white;
+}
+
+.arrow-icon {
+    font-size: 18px;
+    transition: transform 0.3s ease;
+}
+
+.nav-group.open .arrow-icon {
+    transform: rotate(180deg);
+}
+
+/* Submenu */
+.submenu {
+    display: none;
+    padding: 5px 0 5px 20px;
+}
+
+.nav-group.open .submenu {
+    display: block;
+}
+
+.submenu-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 38px;
+    margin-top: 4px;
+    padding: 10px 12px;
+    border-radius: 8px;
+    color: #c4d1e5;
+    text-decoration: none;
+    font-size: 12px;
+}
+
+.submenu-link:hover,
+.submenu-link.active {
+    background: rgba(255, 255, 255, 0.12);
+    color: white;
+}
+
+.submenu-link i {
+    width: 18px;
+    min-width: 18px;
+    text-align: center;
+    font-size: 16px;
+}
+
+    
+
+    .sidebar-bottom { margin-top: auto; border-top: 1px solid rgba(255,255,255,.12); padding-top: 17px; }
+    .profile { display: flex; align-items: center; gap: 10px; padding: 4px 7px 16px; }
+    .avatar {
+      display: grid; place-items: center; flex-shrink: 0;
+      width: 37px; height: 37px; border-radius: 50%;
+      background: #e5edfb; color: #31517f; font-weight: 750;
+    }
+    .profile-name { font-weight: 650; font-size: 14px; }
+    .profile-role { color: #aebdd5; font-size: 12px; margin-top: 4px; }
+    .logout { display: flex; align-items: center; gap: 10px; color: #c4d1e5; padding: 10px 8px; font-size: 14px; }
+
+
+.main {
+    margin-left: 238px; min-height: 100vh;
+}
+
+.topbar {
+      height: 70px; background: var(--white); border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between; gap: 20px;
+      padding: 0 30px; position: sticky; top: 0; z-index: 5;
+    }
+    .top-left, .top-right { display: flex; align-items: center; gap: 16px; }
+    .menu-button {
+      border: 0; background: #f1f5fb; color: var(--navy); width: 36px; height: 36px;
+      border-radius: 9px; cursor: pointer; font-size: 18px;
+    }
+    .search {
+      width: min(340px, 30vw); height: 38px; border: 1px solid var(--border);
+      border-radius: 9px; display: flex; align-items: center; gap: 9px;
+      padding: 0 12px; background: #f9fbfe; color: #8190a7;
+    }
+    .search input { border: 0; outline: 0; background: transparent; width: 100%; color: var(--text); font-size: 12px; }
+    .date-pill { background: #f3f6fb; padding: 10px 13px; border-radius: 8px; font-size: 12px; color: #526582; white-space: nowrap; }
+    .manager { display: flex; align-items: center; gap: 9px; font-size: 12px; font-weight: 650; }
+    .manager .avatar { width: 34px; height: 34px; }
+    .content { padding: 27px 30px 34px; max-width: 1600px; margin: 0 auto; }
+    .page-heading { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; margin-bottom: 23px; }
+    .eyebrow { color: #8190a7; font-size: 11px; margin-bottom: 8px; }
+    h1 { font-size: 25px; line-height: 1.2; margin: 0; letter-spacing: -.7px; }
+
+.breadcrumb {
+    color: var(--muted);
+    font-size: 12px;
+}
+
+.breadcrumb strong {
+    color: var(--text);
+}
+
+.profile {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    background: #dbeafe;
+    color: #1d4ed8;
+}
+
+.profile small {
+    display: block;
+    color: var(--muted);
+    font-weight: normal;
+    margin-top: 4px;
+}
+
+.content {
+    max-width: 1450px;
+    margin: auto;
+    padding: 30px;
+}
+
+/* Header */
+
+.page-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 18px;
+    margin-bottom: 25px;
+}
+
+.eyebrow { color: #8190a7; font-size: 11px; margin-bottom: 8px; }
+
+.page-header h1 {
+    font-size: 27px;
+    margin: 0 0 8px;
+    letter-spacing: -0.5px;
+}
+
+.page-header p {
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.6;
+    margin: 0;
+}
+
+.primary-btn {
+    background: var(--blue);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 11px 15px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.primary-btn:hover {
+    background: #1d4ed8;
+}
+
+.secondary-btn {
+    background: white;
+    color: #475569;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 13px;
+    font-size: 12px;
+}
+
+/* Statistics */
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 16px;
+    margin-bottom: 22px;
+}
+
+.stat-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 19px;
+}
+
+.stat-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    color: var(--muted);
+    font-size: 12px;
+}
+
+.stat-icon {
+    width: 34px;
+    height: 34px;
+    display: grid;
+    place-items: center;
+    background: #eff6ff;
+    color: var(--blue);
+    border-radius: 9px;
+    font-size: 17px;
+}
+
+.stat-number {
+    display: block;
+    font-size: 27px;
+    margin: 13px 0 6px;
+}
+
+.stat-card small {
+    color: var(--muted);
+    font-size: 10px;
+}
+
+/* Filters */
+
+.filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 11px;
+    padding: 14px;
+    margin-bottom: 17px;
+}
+
+.search-box {
+    flex: 1;
+    min-width: 200px;
+}
+
+.search-box input,
+.filters select {
+    width: 100%;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 12px;
+    background: white;
+    color: #334155;
+    font-size: 12px;
+    outline: none;
+}
+
+.filters select {
+    width: auto;
+    min-width: 145px;
+}
+
+.search-box input:focus,
+.filters select:focus,
+.form-field input:focus,
+.form-field select:focus,
+.form-field textarea:focus {
+    border-color: #93c5fd;
+    outline: 2px solid #dbeafe;
+}
+
+/* Table */
+
+.panel {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 20px;
+    border-bottom: 1px solid var(--border);
+}
+
+.panel-header h3 {
+    margin: 0;
+    font-size: 15px;
+}
+
+.panel-header p {
+    color: var(--muted);
+    font-size: 11px;
+    margin: 6px 0 0;
+}
+
+.result-count {
+    color: var(--muted);
+    background: #f1f5f9;
+    padding: 7px 9px;
+    border-radius: 7px;
+    font-size: 11px;
+    white-space: nowrap;
+}
+
+.table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    min-width: 950px;
+    border-collapse: collapse;
+}
+
+th {
+    background: #fafbfd;
+    color: #94a3b8;
+    text-align: left;
+    text-transform: uppercase;
+    font-size: 10px;
+    letter-spacing: 0.5px;
+    padding: 14px 16px;
+    white-space: nowrap;
+}
+
+td {
+    border-top: 1px solid #eef2f7;
+    padding: 15px 16px;
+    font-size: 12px;
+    vertical-align: middle;
+}
+
+tbody tr:hover {
+    background: #fbfdff;
+}
+
+.employee {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 150px;
+}
+
+.employee-avatar {
+    width: 35px;
+    height: 35px;
+    border-radius: 9px;
+    display: grid;
+    place-items: center;
+    background: #eff6ff;
+    color: #2563eb;
+    font-size: 11px;
+    font-weight: bold;
+    flex-shrink: 0;
+}
+
+.employee-name {
+    font-weight: bold;
+}
+
+.employee-role {
+    display: block;
+    color: var(--muted);
+    font-size: 10px;
+    margin-top: 4px;
+}
+
+.activity-name {
+    font-weight: bold;
+    line-height: 1.5;
+    max-width: 230px;
+}
+
+.notes {
+    color: var(--muted);
+    font-size: 11px;
+    line-height: 1.6;
+    max-width: 220px;
+}
+
+.date-cell {
+    white-space: nowrap;
+}
+
+.status {
+    display: inline-block;
+    padding: 6px 9px;
+    border-radius: 20px;
+    font-size: 10px;
+    font-weight: bold;
+    white-space: nowrap;
+}
+
+.status::before {
+    content: "";
+    display: inline-block;
+    width: 5px;
+    height: 5px;
+    background: currentColor;
+    border-radius: 50%;
+    margin-right: 5px;
+    vertical-align: middle;
+}
+
+.status.done {
+    background: var(--green-bg);
+    color: var(--green);
+}
+
+.status.progress {
+    background: var(--yellow-bg);
+    color: var(--yellow);
+}
+
+.status.pending {
+    background: var(--gray-bg);
+    color: #475569;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 5px;
+}
+
+.icon-btn {
+    width: 29px;
+    height: 29px;
+    border: 1px solid var(--border);
+    background: white;
+    color: #64748b;
+    border-radius: 7px;
+}
+
+.icon-btn:hover {
+    background: #eff6ff;
+    color: var(--blue);
+}
+
+.empty-state {
+    text-align: center;
+    color: var(--muted);
+    padding: 35px;
+}
+
+/* Summary */
+
+.bottom-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+    margin-top: 20px;
+}
+
+.summary-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+}
+
+.summary-card h3 {
+    font-size: 14px;
+    margin: 0 0 6px;
+}
+
+.summary-card > p {
+    color: var(--muted);
+    font-size: 11px;
+    margin: 0 0 20px;
+    line-height: 1.6;
+}
+
+.progress-row {
+    display: grid;
+    grid-template-columns: 115px 1fr 38px;
+    align-items: center;
+    gap: 10px;
+    margin: 17px 0;
+    font-size: 11px;
+}
+
+.progress-track {
+    height: 8px;
+    background: #eef2f7;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    width: 0;
+    background: #2563eb;
+    border-radius: 20px;
+    transition: width 0.25s;
+}
+
+.progress-row strong {
+    text-align: right;
+}
+
+.info-box {
+    background: #eff6ff;
+    padding: 14px;
+    border-radius: 9px;
+    font-size: 11px;
+    color: #475569;
+    line-height: 1.7;
+}
+
+.info-box strong {
+    display: block;
+    color: #1e3a8a;
+    margin-bottom: 4px;
+}
+
+/* Modal */
+
+.modal-backdrop {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    background: #0f172a80;
+    align-items: center;
+    justify-content: center;
+    padding: 18px;
+}
+
+.modal-backdrop.show {
+    display: flex;
+}
+
+.modal {
+    width: min(620px, 100%);
+    max-height: 90vh;
+    overflow-y: auto;
+    background: white;
+    border-radius: 13px;
+}
+
+.modal-header {
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border);
+}
+
+.modal-header h2 {
+    font-size: 17px;
+    margin: 0;
+}
+
+.close-btn {
+    border: none;
+    background: #f1f5f9;
+    border-radius: 7px;
+    width: 30px;
+    height: 30px;
+    font-size: 18px;
+}
+
+.modal-body {
+    padding: 20px;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.form-field.full {
+    grid-column: 1 / -1;
+}
+
+.form-field label {
+    font-size: 11px;
+    color: #475569;
+    font-weight: bold;
+}
+
+.form-field input,
+.form-field select,
+.form-field textarea {
+    width: 100%;
+    padding: 10px 11px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: white;
+    font-size: 12px;
+}
+
+.form-field textarea {
+    min-height: 90px;
+    resize: vertical;
+}
+
+.modal-footer {
+    padding: 16px 20px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: flex-end;
+    gap: 9px;
+}
+
+.form-note {
+    color: var(--muted);
+    font-size: 10px;
+    line-height: 1.6;
+    margin: 15px 0 0;
+}
+
+/* Responsive */
+
+@media (max-width: 1050px) {
+    .sidebar {
+        width: 210px;
+    }
+
+    .content {
+        padding: 24px 20px;
+    }
+
+    .stats-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 720px) {
+    .app {
+        display: block;
+    }
+
+    .sidebar {
+        width: 100%;
+        padding: 12px;
+    }
+
+    .brand {
+        padding-bottom: 12px;
+        border: none;
+    }
+
+    .nav-title,
+    .sidebar-footer {
+        display: none;
+    }
+
+    .nav {
+        display: flex;
+        gap: 5px;
+        overflow-x: auto;
+        padding-top: 8px;
+    }
+
+    .nav a {
+        white-space: nowrap;
+        font-size: 11px;
+        padding: 9px;
+    }
+
+    .topbar {
+        height: 55px;
+        padding: 0 15px;
+    }
+
+    .content {
+        padding: 20px 13px;
+    }
+
+    .page-header {
+        flex-direction: column;
+    }
+
+    .page-header h1 {
+        font-size: 24px;
+    }
+
+    .stats-grid {
+        gap: 10px;
+    }
+
+    .stat-card {
+        padding: 14px;
+    }
+
+    .stat-number {
+        font-size: 23px;
+    }
+
+    .filters select {
+        flex: 1;
+    }
+
+    .bottom-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .form-field.full {
+        grid-column: auto;
+    }
+}
+</style>
+</head>
+
+<body>
+<div class="app">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="brand">
+        <i class="bx bx-bar-chart-big brand-mark"></i>
+        <div class="brand-copy">
+          <div class="brand-name">Business Monitor</div>
+          <div class="brand-sub">Divisi Bisnis</div>
+        </div>
+      </div>
+
+      <div class="nav-label">Menu Utama</div>
+      <nav class="nav" aria-label="Navigasi utama"> 
+        <a " href="dashboard.html">
+            <i class="bx bx-home-alt nav-icon"></i>
+            <span class="nav-text">Dashboard</span>
+        </a>
+        <a href="employees.html">
+            <i class="bx bx-user nav-icon"></i>
+            <span class="nav-text">Data Karyawan</span>
+        </a>
+
+        <!-- Menu Produk dengan submenu -->
+        <div class="nav-group">
+            <div class="nav-product-row">
+                <a href="products.html" class="nav-product-link">
+                    <i class="bx bx-package nav-icon"></i>
+                    <span class="nav-text">Produk</span>
+                </a>
+
+                <button
+                    type="button"
+                    class="nav-toggle"
+                    id="produkToggle"
+                    aria-label="Buka submenu Produk"
+                    aria-expanded="false"
+                >
+                    <i class="bx bx-chevron-down arrow-icon"></i>
+                </button>
+            </div>
+
+            <div class="submenu" id="produkSubmenu">
+                <a href="bank.html" class="submenu-link active" data-page="bank">
+                    <i class="bx bx-buildings"></i>
+                    <span>Data Bank</span>
+                </a>
+
+                <a href="product.html" class="submenu-link" data-page="produk">
+                    <i class="bx bx-box"></i>
+                    <span>Data Produk</span>
+                </a>
+            </div>
+        </div>
+
+        <a href="targets.html">
+            <i class="bx bx-bullseye nav-icon"></i>
+            <span class="nav-text">Target</span>
+        </a>
+        <a href="commitments.html">
+            <i class="bx bx-check-shield nav-icon"></i>
+            <span class="nav-text">Komitmen</span>
+        </a>
+        <a class="active" href="daily-activities.html">
+            <i class="bx bx-calendar-check nav-icon"></i>
+            <span class="nav-text">Daily Activity</span>
+        </a>
+        <a href="achievements.html">
+            <i class="bx bx-trophy nav-icon"></i>
+            <span class="nav-text">Pencapaian</span>
+        </a>
+        <a href="reports.html">
+            <i class="bx bx-file nav-icon"></i>
+            <span class="nav-text">Laporan</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-bottom">
+        <div class="profile">
+          <div class="avatar">M</div>
+          <div class="profile-copy">
+            <div class="profile-name">Manajer Bisnis</div>
+            <div class="profile-role">Administrator</div>
+          </div>
+        </div>
+        <a class="logout" href="#"><span>↪</span><span class="logout-text">Keluar</span></a>
+      </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="main">
+
+        <header class="topbar">
+            <div class="top-left">
+                <button class="menu-button" aria-label="Menu">☰</button>
+                <label class="search">
+                    <span>⌕</span>
+                    <input type="search" placeholder="Cari karyawan..." aria-label="Cari karyawan" />
+                </label>
+            </div>
+            <div class="top-right">
+                <div class="date-pill">▦ &nbsp; Senin, 12 Oktober 2026</div>
+                <span aria-label="Notifikasi" title="Notifikasi">♧</span>
+                <div class="manager">
+                    <div class="avatar">M</div>
+                    <span class="manager-label">Manajer</span>
+                    <span style="color:#8190a7">⌄</span>
+                </div>
+            </div>
+        </header>
+
+        <div class="content">
+
+            <!-- PAGE HEADER -->
+            <section class="page-header">
+                <div>
+                    <div class="eyebrow">Dashboard / Daily Activity</div>
+                    <h1>Daily Activity</h1>
+                    <p>
+                        Pantau aktivitas kerja harian karyawan Divisi Bisnis
+                        dan evaluasi hasil pekerjaannya.
+                    </p>
+                </div>
+
+                <button class="primary-btn" onclick="openModal()">
+                    + Tambah Aktivitas
+                </button>
+            </section>
+
+            <!-- STATISTICS -->
+            <section class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-heading">
+                        Total Aktivitas
+                        <span class="stat-icon">▤</span>
+                    </div>
+                    <strong class="stat-number" id="totalStat">0</strong>
+                    <small>Aktivitas sesuai filter</small>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-heading">
+                        Selesai
+                        <span class="stat-icon">✓</span>
+                    </div>
+                    <strong class="stat-number" id="doneStat">0</strong>
+                    <small>Sudah diselesaikan</small>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-heading">
+                        Sedang Dikerjakan
+                        <span class="stat-icon">◷</span>
+                    </div>
+                    <strong class="stat-number" id="progressStat">0</strong>
+                    <small>Masih dalam proses</small>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-heading">
+                        Belum Dimulai
+                        <span class="stat-icon">○</span>
+                    </div>
+                    <strong class="stat-number" id="pendingStat">0</strong>
+                    <small>Perlu ditindaklanjuti</small>
+                </div>
+            </section>
+
+            <!-- FILTERS -->
+            <section class="filters">
+                <div class="search-box">
+                    <input
+                        id="searchInput"
+                        type="search"
+                        placeholder="Cari karyawan atau aktivitas..."
+                        oninput="renderTable()"
+                    >
+                </div>
+
+                <select id="periodFilter" onchange="renderTable()">
+                    <option value="all">Semua Periode</option>
+                    <option value="today">Hari Ini</option>
+                    <option value="week">7 Hari Terakhir</option>
+                    <option value="month">Bulan Ini</option>
+                </select>
+
+                <select id="statusFilter" onchange="renderTable()">
+                    <option value="all">Semua Status</option>
+                    <option value="done">Selesai</option>
+                    <option value="progress">Sedang Dikerjakan</option>
+                    <option value="pending">Belum Dimulai</option>
+                </select>
+
+                <button class="secondary-btn" onclick="resetFilters()">
+                    Reset Filter
+                </button>
+            </section>
+
+            <!-- ACTIVITY TABLE -->
+            <section class="panel">
+                <div class="panel-header">
+                    <div>
+                        <h3>Catatan Aktivitas Karyawan</h3>
+                        <p>Aktivitas yang dicatat untuk pemantauan manager</p>
+                    </div>
+                    <span class="result-count" id="resultCount">
+                        0 aktivitas
+                    </span>
+                </div>
+
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Karyawan</th>
+                                <th>Aktivitas</th>
+                                <th>Tanggal</th>
+                                <th>Durasi</th>
+                                <th>Status</th>
+                                <th>Catatan / Hasil</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="activityBody"></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- SUMMARY -->
+            <section class="bottom-grid">
+                <div class="summary-card">
+                    <h3>Ringkasan Aktivitas</h3>
+                    <p>
+                        Persentase status berdasarkan data yang tampil
+                        setelah filter diterapkan.
+                    </p>
+
+                    <div class="progress-row">
+                        <span>Selesai</span>
+                        <div class="progress-track">
+                            <div class="progress-fill" id="doneBar"></div>
+                        </div>
+                        <strong id="donePct">0%</strong>
+                    </div>
+
+                    <div class="progress-row">
+                        <span>Dalam Proses</span>
+                        <div class="progress-track">
+                            <div class="progress-fill"
+                                 id="progressBar"
+                                 style="background:#f59e0b"></div>
+                        </div>
+                        <strong id="progressPct">0%</strong>
+                    </div>
+
+                    <div class="progress-row">
+                        <span>Belum Dimulai</span>
+                        <div class="progress-track">
+                            <div class="progress-fill"
+                                 id="pendingBar"
+                                 style="background:#94a3b8"></div>
+                        </div>
+                        <strong id="pendingPct">0%</strong>
+                    </div>
+                </div>
+
+                <div class="summary-card">
+                    <h3>Catatan Manager</h3>
+                    <p>Hal yang perlu diperhatikan saat mengevaluasi aktivitas.</p>
+
+                    <div class="info-box">
+                        <strong>Tips pencatatan aktivitas</strong>
+                        Catat pekerjaan yang dilakukan, hasil yang diperoleh,
+                        kendala yang ditemukan, dan tindak lanjut yang diperlukan.
+                        Gunakan informasi yang jelas agar evaluasi lebih objektif.
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </main>
+</div>
+
+<!-- MODAL FORM -->
+<div class="modal-backdrop" id="activityModal">
+    <div class="modal">
+
+        <div class="modal-header">
+            <h2 id="modalTitle">Tambah Aktivitas</h2>
+            <button class="close-btn" type="button" onclick="closeModal()">
+                ×
+            </button>
+        </div>
+
+        <form id="activityForm" onsubmit="saveActivity(event)">
+            <div class="modal-body">
+                <div class="form-grid">
+
+                    <div class="form-field">
+                        <label for="employee">Nama Karyawan *</label>
+                        <input
+                            id="employee"
+                            required
+                            placeholder="Nama karyawan"
+                        >
+                    </div>
+
+                    <div class="form-field">
+                        <label for="activityDate">Tanggal Aktivitas *</label>
+                        <input id="activityDate" type="date" required>
+                    </div>
+
+                    <div class="form-field full">
+                        <label for="activityName">Nama Aktivitas *</label>
+                        <input
+                            id="activityName"
+                            required
+                            placeholder="Contoh: Memperbarui database pelanggan"
+                        >
+                    </div>
+
+                    <div class="form-field">
+                        <label for="duration">Durasi</label>
+                        <input
+                            id="duration"
+                            placeholder="Contoh: 2 jam"
+                        >
+                    </div>
+
+                    <div class="form-field">
+                        <label for="activityStatus">Status *</label>
+                        <select id="activityStatus" required>
+                            <option value="pending">Belum Dimulai</option>
+                            <option value="progress">Sedang Dikerjakan</option>
+                            <option value="done">Selesai</option>
+                        </select>
+                    </div>
+
+                    <div class="form-field full">
+                        <label for="activityNotes">Catatan / Hasil Pekerjaan</label>
+                        <textarea
+                            id="activityNotes"
+                            placeholder="Tuliskan hasil pekerjaan, kendala, atau tindak lanjut..."
+                        ></textarea>
+                    </div>
+
+                </div>
+
+                <p class="form-note">
+                    * Wajib diisi. Pastikan aktivitas dan hasil pekerjaan
+                    dicatat dengan jelas.
+                </p>
+            </div>
+
+            <div class="modal-footer">
+                <button
+                    class="secondary-btn"
+                    type="button"
+                    onclick="closeModal()"
+                >
+                    Batal
+                </button>
+
+                <button class="primary-btn" type="submit">
+                    Simpan Aktivitas
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    const produkToggle = document.getElementById("produkToggle");
+    const produkGroup = produkToggle.closest(".nav-group");
+    const submenuLinks = document.querySelectorAll(".submenu-link");
+
+    // Buka atau tutup submenu Produk
+    produkToggle.addEventListener("click", () => {
+        produkGroup.classList.toggle("open");
+    });
+
+   
+// ==================================================
+// DATA CONTOH
+// Ganti data ini dengan data karyawan yang sebenarnya.
+// ==================================================
+
+const dateOffset = (offset) => {
+    const date = new Date();
+    date.setDate(date.getDate() + offset);
+    return toISODate(date);
+};
+
+function toISODate(date) {
+    const copy = new Date(date);
+    copy.setMinutes(copy.getMinutes() - copy.getTimezoneOffset());
+    return copy.toISOString().slice(0, 10);
+}
+
+let activities = [
+    {
+        id: 1,
+        employee: "Andi Pratama",
+        role: "Business Development",
+        activity: "Menghubungi calon mitra bisnis",
+        date: dateOffset(0),
+        duration: "2 jam",
+        status: "done",
+        notes: "5 calon mitra dihubungi; 2 meminta proposal."
+    },
+    {
+        id: 2,
+        employee: "Siti Rahma",
+        role: "Sales Executive",
+        activity: "Memperbarui data prospek pelanggan",
+        date: dateOffset(0),
+        duration: "1,5 jam",
+        status: "progress",
+        notes: "18 data prospek diperbarui; 4 data perlu diverifikasi."
+    },
+    {
+        id: 3,
+        employee: "Budi Santoso",
+        role: "Business Analyst",
+        activity: "Menyusun laporan penjualan mingguan",
+        date: dateOffset(0),
+        duration: "3 jam",
+        status: "done",
+        notes: "Draft laporan selesai dan menunggu tinjauan manager."
+    },
+    {
+        id: 4,
+        employee: "Dina Puspita",
+        role: "Administrasi",
+        activity: "Memeriksa kelengkapan dokumen transaksi",
+        date: dateOffset(-1),
+        duration: "2 jam",
+        status: "done",
+        notes: "12 dokumen diperiksa; 1 dokumen perlu dilengkapi."
+    },
+    {
+        id: 5,
+        employee: "Rizky Maulana",
+        role: "Sales Executive",
+        activity: "Menindaklanjuti penawaran kepada klien",
+        date: dateOffset(-1),
+        duration: "1 jam",
+        status: "pending",
+        notes: "Menunggu konfirmasi jadwal dari klien."
+    },
+    {
+        id: 6,
+        employee: "Andi Pratama",
+        role: "Business Development",
+        activity: "Rapat koordinasi peluang kerja sama",
+        date: dateOffset(-2),
+        duration: "1 jam",
+        status: "done",
+        notes: "Tiga peluang kerja sama diprioritaskan."
+    },
+    {
+        id: 7,
+        employee: "Siti Rahma",
+        role: "Sales Executive",
+        activity: "Menyiapkan materi presentasi produk",
+        date: dateOffset(-2),
+        duration: "2,5 jam",
+        status: "progress",
+        notes: "Materi awal selesai; perlu penyesuaian data harga."
+    },
+    {
+        id: 8,
+        employee: "Dina Puspita",
+        role: "Administrasi",
+        activity: "Mengarsipkan dokumen kegiatan bisnis",
+        date: dateOffset(-4),
+        duration: "1 jam",
+        status: "pending",
+        notes: "Menunggu dokumen pendukung dari tim terkait."
+    }
+];
+
+let editingId = null;
+
+const statusLabels = {
+    done: "Selesai",
+    progress: "Sedang Dikerjakan",
+    pending: "Belum Dimulai"
+};
+
+// ==================================================
+// HELPER FUNCTIONS
+// ==================================================
+
+function escapeHTML(value) {
+    return String(value ?? "").replace(/[&<>"']/g, character => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;"
+    })[character]);
+}
+
+function getInitials(name) {
+    return name
+        .trim()
+        .split(/\s+/)
+        .map(word => word[0])
+        .slice(0, 2)
+        .join("")
+        .toUpperCase();
+}
+
+function formatDate(value) {
+    if (!value) return "-";
+
+    return new Date(value + "T00:00:00").toLocaleDateString("id-ID", {
+        day: "2-digit",
+        month: "short",
+        year: "numeric"
+    });
+}
+
+function isInPeriod(dateValue, period) {
+    const activityDate = new Date(dateValue + "T00:00:00");
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    if (period === "today") {
+        return dateValue === toISODate(today);
+    }
+
+    if (period === "week") {
+        const start = new Date(today);
+        start.setDate(start.getDate() - 6);
+
+        return activityDate >= start && activityDate <= today;
+    }
+
+    if (period === "month") {
+        return activityDate.getMonth() === today.getMonth()
+            && activityDate.getFullYear() === today.getFullYear();
+    }
+
+    return true;
+}
+
+// ==================================================
+// FILTER DATA
+// ==================================================
+
+function getFilteredActivities() {
+    const keyword = document
+        .getElementById("searchInput")
+        .value.toLowerCase()
+        .trim();
+
+    const period = document.getElementById("periodFilter").value;
+    const status = document.getElementById("statusFilter").value;
+
+    return activities.filter(item => {
+        const matchesKeyword =
+            item.employee.toLowerCase().includes(keyword) ||
+            item.activity.toLowerCase().includes(keyword) ||
+            item.notes.toLowerCase().includes(keyword);
+
+        const matchesPeriod = isInPeriod(item.date, period);
+
+        const matchesStatus =
+            status === "all" || item.status === status;
+
+        return matchesKeyword && matchesPeriod && matchesStatus;
+    });
+}
+
+// ==================================================
+// RENDER TABLE
+// ==================================================
+
+function renderTable() {
+    const filtered = getFilteredActivities();
+
+    document.getElementById("resultCount").textContent =
+        filtered.length + " aktivitas";
+
+    const tbody = document.getElementById("activityBody");
+
+    if (filtered.length === 0) {
+        tbody.innerHTML = `
+            <tr>
+                <td colspan="7" class="empty-state">
+                    Tidak ada aktivitas yang sesuai dengan filter.
+                </td>
+            </tr>
+        `;
+    } else {
+        const sorted = [...filtered].sort((a, b) =>
+            b.date.localeCompare(a.date) || b.id - a.id
+        );
+
+        tbody.innerHTML = sorted.map(item => `
+            <tr>
+                <td>
+                    <div class="employee">
+                        <div class="employee-avatar">
+                            ${escapeHTML(getInitials(item.employee))}
+                        </div>
+                        <div>
+                            <div class="employee-name">
+                                ${escapeHTML(item.employee)}
+                            </div>
+                            <span class="employee-role">
+                                ${escapeHTML(item.role || "Karyawan Divisi Bisnis")}
+                            </span>
+                        </div>
+                    </div>
+                </td>
+
+                <td>
+                    <div class="activity-name">
+                        ${escapeHTML(item.activity)}
+                    </div>
+                </td>
+
+                <td class="date-cell">
+                    ${formatDate(item.date)}
+                </td>
+
+                <td>${escapeHTML(item.duration || "-")}</td>
+
+                <td>
+                    <span class="status ${item.status}">
+                        ${statusLabels[item.status]}
+                    </span>
+                </td>
+
+                <td>
+                    <div class="notes">
+                        ${escapeHTML(item.notes || "Belum ada catatan hasil.")}
+                    </div>
+                </td>
+
+                <td>
+                    <div class="action-buttons">
+                        <button
+                            class="icon-btn"
+                            title="Lihat detail"
+                            aria-label="Lihat detail"
+                            onclick="viewActivity(${item.id})"
+                        >⌕</button>
+
+                        <button
+                            class="icon-btn"
+                            title="Edit"
+                            aria-label="Edit"
+                            onclick="editActivity(${item.id})"
+                        >✎</button>
+
+                        <button
+                            class="icon-btn"
+                            title="Hapus"
+                            aria-label="Hapus"
+                            onclick="deleteActivity(${item.id})"
+                        >×</button>
+                    </div>
+                </td>
+            </tr>
+        `).join("");
+    }
+
+    renderStatistics(filtered);
+}
+
+// ==================================================
+// STATISTICS
+// ==================================================
+
+function renderStatistics(data) {
+    const total = data.length;
+    const done = data.filter(item => item.status === "done").length;
+    const progress = data.filter(item => item.status === "progress").length;
+    const pending = data.filter(item => item.status === "pending").length;
+
+    document.getElementById("totalStat").textContent = total;
+    document.getElementById("doneStat").textContent = done;
+    document.getElementById("progressStat").textContent = progress;
+    document.getElementById("pendingStat").textContent = pending;
+
+    const percentage = count =>
+        total === 0 ? 0 : Math.round(count / total * 100);
+
+    const donePercent = percentage(done);
+    const progressPercent = percentage(progress);
+    const pendingPercent = percentage(pending);
+
+    document.getElementById("doneBar").style.width = donePercent + "%";
+    document.getElementById("progressBar").style.width = progressPercent + "%";
+    document.getElementById("pendingBar").style.width = pendingPercent + "%";
+
+    document.getElementById("donePct").textContent = donePercent + "%";
+    document.getElementById("progressPct").textContent = progressPercent + "%";
+    document.getElementById("pendingPct").textContent = pendingPercent + "%";
+}
+
+// ==================================================
+// ADD ACTIVITY
+// ==================================================
+
+function openModal() {
+    editingId = null;
+
+    document.getElementById("activityForm").reset();
+    document.getElementById("modalTitle").textContent = "Tambah Aktivitas";
+    document.getElementById("activityDate").value = toISODate(new Date());
+
+    document.getElementById("activityModal").classList.add("show");
+}
+
+function closeModal() {
+    document.getElementById("activityModal").classList.remove("show");
+}
+
+function saveActivity(event) {
+    event.preventDefault();
+
+    const data = {
+        employee: document.getElementById("employee").value.trim(),
+        role: "Karyawan Divisi Bisnis",
+        date: document.getElementById("activityDate").value,
+        activity: document.getElementById("activityName").value.trim(),
+        duration: document.getElementById("duration").value.trim(),
+        status: document.getElementById("activityStatus").value,
+        notes: document.getElementById("activityNotes").value.trim()
+    };
+
+    if (editingId !== null) {
+        const index = activities.findIndex(item => item.id === editingId);
+
+        if (index !== -1) {
+            activities[index] = {
+                ...activities[index],
+                ...data
+            };
+        }
+    } else {
+        activities.push({
+            id: Date.now(),
+            ...data
+        });
+    }
+
+    closeModal();
+    renderTable();
+}
+
+// ==================================================
+// VIEW DETAIL
+// ==================================================
+
+function viewActivity(id) {
+    const item = activities.find(activity => activity.id === id);
+
+    if (!item) return;
+
+    alert(
+        "DETAIL AKTIVITAS\n\n" +
+        "Karyawan: " + item.employee + "\n" +
+        "Aktivitas: " + item.activity + "\n" +
+        "Tanggal: " + formatDate(item.date) + "\n" +
+        "Durasi: " + (item.duration || "-") + "\n" +
+        "Status: " + statusLabels[item.status] + "\n" +
+        "Catatan / Hasil: " + (item.notes || "-")
+    );
+}
+
+// ==================================================
+// EDIT ACTIVITY
+// ==================================================
+
+function editActivity(id) {
+    const item = activities.find(activity => activity.id === id);
+
+    if (!item) return;
+
+    editingId = id;
+
+    document.getElementById("modalTitle").textContent = "Edit Aktivitas";
+    document.getElementById("employee").value = item.employee;
+    document.getElementById("activityDate").value = item.date;
+    document.getElementById("activityName").value = item.activity;
+    document.getElementById("duration").value = item.duration;
+    document.getElementById("activityStatus").value = item.status;
+    document.getElementById("activityNotes").value = item.notes;
+
+    document.getElementById("activityModal").classList.add("show");
+}
+
+// ==================================================
+// DELETE ACTIVITY
+// ==================================================
+
+function deleteActivity(id) {
+    const item = activities.find(activity => activity.id === id);
+
+    if (!item) return;
+
+    const confirmed = confirm(
+        `Hapus aktivitas "${item.activity}" milik ${item.employee}?`
+    );
+
+    if (confirmed) {
+        activities = activities.filter(activity => activity.id !== id);
+        renderTable();
+    }
+}
+
+// ==================================================
+// RESET FILTER
+// ==================================================
+
+function resetFilters() {
+    document.getElementById("searchInput").value = "";
+    document.getElementById("periodFilter").value = "all";
+    document.getElementById("statusFilter").value = "all";
+
+    renderTable();
+}
+
+// Tutup modal ketika area di luar form diklik.
+document.getElementById("activityModal").addEventListener("click", event => {
+    if (event.target.id === "activityModal") {
+        closeModal();
+    }
+});
+
+// Tutup modal menggunakan tombol Escape.
+document.addEventListener("keydown", event => {
+    if (event.key === "Escape") {
+        closeModal();
+    }
+});
+
+// Tampilkan data saat halaman pertama kali dibuka.
+renderTable();
+</script>
+</body>
+</html>
